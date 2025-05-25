@@ -208,7 +208,7 @@ public class FeasibilityFactory {
         if(liquidAmountScaled <= 0) {
             return;
         } else if(liquidAmountToBeScaledTo <= 0) {
-            multiplier = 0;
+            return;
         } else {
             multiplier = orderConfiguration.getAmountOrderedInMl() / ((double) liquidAmountScaled);
         }
