@@ -204,11 +204,10 @@ public class FeasibilityFactory {
                 .filter(x -> !x.isScale())
                 .mapToInt(ProductionStepIngredient::getAmount).sum();
         int liquidAmountToBeScaledTo = orderConfiguration.getAmountOrderedInMl() - liquidAmountUnscaled;
+        double multiplier;
         if(liquidAmountScaled <= 0) {
             return;
-        }
-        double multiplier;
-        if(liquidAmountToBeScaledTo <= 0) {
+        } else if(liquidAmountToBeScaledTo <= 0) {
             multiplier = 0;
         } else {
             multiplier = orderConfiguration.getAmountOrderedInMl() / ((double) liquidAmountScaled);
