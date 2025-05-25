@@ -353,7 +353,7 @@ else
 fi
 
 mkdir -p /root/cocktailpi
-wget -q --show-progress https://github.com/alex9849/CocktailPi/releases/latest/download/server.jar -O /root/cocktailpi/cocktailpi.jar
+wget -q --show-progress https://github.com/BullnBear789/CocktailPi/server.jar -O /root/cocktailpi/cocktailpi.jar
 if [ -f /etc/init.d/cocktailpi ]; then
     unlink /etc/init.d/cocktailpi
 fi
@@ -400,7 +400,7 @@ if [ -d /home/pi/wait-for-app-html ]; then
     rm -r /home/pi/wait-for-app-html
 fi
 
-sudo -u pi wget -q --show-progress https://github.com/alex9849/CocktailPi/releases/latest/download/wait-for-app.tar -O /home/pi/wait-for-app.tar
+sudo -u pi wget -q --show-progress https://github.com/BullnBear789/CocktailPi/wait-for-app.tar -O /home/pi/wait-for-app.tar
 
 sudo -u pi tar -xf /home/pi/wait-for-app.tar -C /home/pi/
 sudo -u pi rm /home/pi/wait-for-app.tar
