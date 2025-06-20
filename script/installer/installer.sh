@@ -353,7 +353,7 @@ else
 fi
 
 mkdir -p /root/cocktailpi
-wget -q --show-progress https://github.com/alex9849/CocktailPi/releases/latest/download/server.jar -O /root/cocktailpi/cocktailpi.jar
+wget -q --show-progress https://cloud.liggesmeyer.net/s/CALd2zEKx3dczm7/download/server.jar -O /root/cocktailpi/cocktailpi.jar
 if [ -f /etc/init.d/cocktailpi ]; then
     unlink /etc/init.d/cocktailpi
 fi
