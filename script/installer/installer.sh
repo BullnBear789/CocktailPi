@@ -323,7 +323,7 @@ else
     echo "Updating system..."
 fi
 sleep 2
-apt-get update && sudo apt-get -y upgrade && sudo apt-get install systemd
+apt-get update && sudo apt-get -y upgrade
 
 clear
 serviceRunning=$(systemctl is-active cocktailpi)
