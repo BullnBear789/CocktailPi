@@ -331,6 +331,7 @@ export default {
         },
         view_logs_btn_tooltip: 'Logs anzeigen',
         edit_btn_tooltip: 'Bearbeiten',
+        start_btn_tooltip: 'Start',
         delete_btn_tooltip: 'Löschen'
       },
       delete_dialog: {
@@ -691,7 +692,9 @@ export default {
         status_enabled: 'Aktiviert',
         status_disabled: 'Deaktiviert',
         overshoot: 'Overshoot:',
-        timer: 'Timer:'
+        timer: 'Timer:',
+        timer_no_timer_label: 'Niemals',
+        overshoot_no_overshoot_label: 'Nein'
       },
       load_cell: {
         headline: 'Wägezelle',
@@ -843,13 +846,16 @@ export default {
     },
     gpio_expander_expansion_item: {
       caption_local: 'Board: Lokal, Nutzung: {pinsUsed}/{pinsMax}',
-      caption_i2c: 'Adresse: {addr}, Board: {board}, Nutzung: {pinsUsed}/{pinsMax}'
+      caption_i2c: 'Adresse: {addr}, Board: {board}, Nutzung: {pinsUsed}/{pinsMax}',
+      i2c_backend_restarted: 'I2C backend neu gestarted'
     },
     pump_mgmt: {
       headline: 'Pumpenverwaltung',
       add_btn_label: 'Hinzufügen',
       start_all_btn_label: 'Alle starten',
       stop_all_btn_label: 'Alle stoppen',
+      show_pump_details_btn_label: 'Details anzeigen',
+      hide_pump_details_btn_label: 'Details ausblenden',
       no_pumps_found: 'Keine Pumpen gefunden!',
       notifications: {
         all_stopped: 'Alle Pumpen gestoppt!',
@@ -1109,6 +1115,8 @@ export default {
     },
     settings_appearance: {
       language: 'Sprache',
+      recipe_page_size: 'Rezepte pro Seite',
+      recipe_page_size_option: '{nr} Rezepte',
       save_btn_label: 'Speichern',
       notifications: {
         settings_updated: 'Einstellungen aktualisiert!'

@@ -336,6 +336,7 @@ export default {
         },
         view_logs_btn_tooltip: 'View logs',
         edit_btn_tooltip: 'Edit',
+        start_btn_tooltip: 'Start',
         delete_btn_tooltip: 'Delete'
       },
       delete_dialog: {
@@ -749,7 +750,9 @@ export default {
         status_enabled: 'Enabled',
         status_disabled: 'Disabled',
         overshoot: 'Overshoot:',
-        timer: 'Timer:'
+        timer: 'Timer:',
+        timer_no_timer_label: 'Never',
+        overshoot_no_overshoot_label: 'No'
       },
       load_cell: {
         headline: 'Load cell',
@@ -904,13 +907,16 @@ export default {
     },
     gpio_expander_expansion_item: {
       caption_local: 'Board: Local, Usage: {pinsUsed}/{pinsMax}',
-      caption_i2c: 'Address: {addr}, Board: {board}, Usage: {pinsUsed}/{pinsMax}'
+      caption_i2c: 'Address: {addr}, Board: {board}, Usage: {pinsUsed}/{pinsMax}',
+      i2c_backend_restarted: 'I2C backend restarted'
     },
     pump_mgmt: {
       headline: 'Pump Management',
       add_btn_label: 'Add',
       start_all_btn_label: 'Start all',
       stop_all_btn_label: 'Stop all',
+      show_pump_details_btn_label: 'Show details',
+      hide_pump_details_btn_label: 'Hide details',
       no_pumps_found: 'No pumps found!',
       notifications: {
         all_stopped: 'All pumps stopped!',
@@ -968,10 +974,15 @@ export default {
         enable_label: 'Enable reverse pumping',
         vd_pin_headline: 'Voltage director pin',
         vd_pin_label: 'Director-Pin',
+        forward_state_high_label: 'Forward state',
         overshoot_label: 'Overshoot',
         overshoot_hint: 'How strongly should number of ml be overshoot on pump back?',
         auto_pump_back_timer_label: 'Inactive time till automatic pump back',
-        save_btn_label: 'Save & Return'
+        save_btn_label: 'Save & Return',
+        forward_state: {
+          high: 'High',
+          low: 'Low'
+        }
       },
       notifications: {
         updated: 'Settings updated!'
@@ -1192,6 +1203,8 @@ export default {
     },
     settings_appearance: {
       language: 'Language',
+      recipe_page_size: 'Recipes per page',
+      recipe_page_size_option: '{nr} Recipes',
       save_btn_label: 'Save',
       notifications: {
         settings_updated: 'Settings updated!'
