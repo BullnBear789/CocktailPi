@@ -182,18 +182,19 @@ function rasp_router {
 	sudo systemctl stop dnsmasq
 	sudo systemctl stop hostapd dnsmasq
 
-	sudo nano /etc/dhcpcd.conf
+	sudo -u pi touch /etc/dhcpcd.conf
 	echo "interface wlan0" >> /etc/dhcpcd.conf
-	echo "static ip_address=192.168.1.5/24" >> /etc/dhcpcd.conf
+	echo "static ip_address=192.168.1.11/24" >> /etc/dhcpcd.conf
 	echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
 
-	sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+	sudo -u pi mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+	sudo -u pi touch /etc/dnsmasq.conf
 	echo "interface=wlan0"  >> /etc/dnsmasq.conf
 	echo "dhcp-range=192.168.1.2,192.168.1.50,24h"  >> /etc/dnsmasq.conf
 	echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
 	echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
 
-	sudo nano /etc/hostapd/hostapd.conf
+	sudo -u pi touch /etc/hostapd/hostapd.conf
 	echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
 	echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
 	echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
@@ -209,15 +210,15 @@ function rasp_router {
 	echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
 	echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
 
-	sudo nano /etc/hostapd/hostapd.conf
+	sudo -u pi touch /etc/hostapd/hostapd.conf
 	echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/hostapd/hostapd.conf
 
-	sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
-	sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
+	sudo -u pi cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
+	sudo -u pi cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
 
-	sudo nano /etc/hostapd/hostapd.conf
-	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev 
-	update_config=1" >> /etc/hostapd/hostapd.conf
+	sudo -u pi touch /etc/hostapd/hostapd.conf
+	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> /etc/hostapd/hostapd.conf
+	echo "update_config=1" >> /etc/hostapd/hostapd.conf
 
 	sudo systemctl unmask hostapd
 	sudo systemctl enable hostapd
@@ -225,7 +226,7 @@ function rasp_router {
 	sudo systemctl enable dhcpcd
 	sudo systemctl start dhcpcd
 
-	sudo nano /etc/sysctl.conf
+	sudo -u pi touch /etc/sysctl.conf
 	echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 	sudo sysctl -p
 
