@@ -88,6 +88,7 @@ function select_mode {
         echo "(2) CocktailPi + Touchscreen ohne Bildschirmtastatur"
         echo "(3) CocktailPi + Touchscreen mit Bildschirmtastatur"
         echo "(4) Konfiguration: Größe der Touchscreen UI ändern"
+		echo "(5) Router"
         echo ""
         echo "(0) Exit"
     else
@@ -99,6 +100,7 @@ function select_mode {
         echo "(2) CocktailPi + Touchscreen without on-screen keyboard"
         echo "(3) CocktailPi + Touchscreen with on-screen keyboard"
         echo "(4) Configuration: Change size of Touchscreen UI"
+		echo "(5) Router"
         echo ""
         echo "(0) Exit"
     fi
@@ -140,6 +142,9 @@ function select_mode {
         '4')
             clear
         ;;
+        '5')
+            clear
+        ;;
         '0')
             clear
             exit 0
@@ -151,6 +156,89 @@ function select_mode {
         ;;
     esac
     done
+}
+
+function backup_remove {
+	clear
+	sudo -u pi cp -r /root/cocktailpi/Cocktailpi-data.db /home/pi/Backup_CocktailPi
+	sudo -u pi rm -rf /home/pi/cocktailpi-installer.sh
+	sudo -u pi rm -rf /root/cocktailpi
+	sudo -u pi rm -rf /root/cocktailpi-installer.sh
+	sudo -u pi rm -rf /var/log/cocktailpi.log
+	sudo -u pi rm -rf /etc/init.d/cocktailpi
+}
+
+function restoredata {
+    clear
+	sudo -u pi cp -r /home/pi/Backup_CocktailPi/ Cocktailpi-data.db /root/cocktailpi
+	sudo -u pi rm -rf /home/pi/Backup_CocktailPi
+}
+
+function rasp_router {
+    clear
+	apt-get update && sudo apt-get -y upgrade
+	sudo apt-get install dhcpcd5 -n
+	sudo apt install hostapd dnsmasq
+	sudo systemctl stop dnsmasq
+	sudo systemctl stop hostapd dnsmasq
+
+	sudo nano /etc/dhcpcd.conf
+	echo "interface wlan0" >> /etc/dhcpcd.conf
+	echo "static ip_address=192.168.1.5/24" >> /etc/dhcpcd.conf
+	echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
+
+	sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+	echo "interface=wlan0"  >> /etc/dnsmasq.conf
+	echo "dhcp-range=192.168.1.2,192.168.1.50,24h"  >> /etc/dnsmasq.conf
+	echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
+	echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
+
+	sudo nano /etc/hostapd/hostapd.conf
+	echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
+	echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
+	echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
+	echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
+	echo "channel=7"  >> /etc/hostapd/hostapd.conf
+	echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
+	echo "macaddr_acl=0"  >> /etc/hostapd/hostapd.conf
+	echo "auth_algs=1"  >> /etc/hostapd/hostapd.conf
+	echo "ignore_broadcast_ssid=0"  >> /etc/hostapd/hostapd.conf
+	echo "wpa=2"  >> /etc/hostapd/hostapd.conf
+	echo "wpa_passphrase=1234567890"  >> /etc/hostapd/hostapd.conf
+	echo "wpa_key_mgmt=WPA-PSK"  >> /etc/hostapd/hostapd.conf
+	echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
+	echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
+
+	sudo nano /etc/hostapd/hostapd.conf
+	echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/hostapd/hostapd.conf
+
+	sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
+	sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
+
+	sudo nano /etc/hostapd/hostapd.conf
+	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev 
+	update_config=1" >> /etc/hostapd/hostapd.conf
+
+	sudo systemctl unmask hostapd
+	sudo systemctl enable hostapd
+	sudo systemctl start hostapd
+	sudo systemctl enable dhcpcd
+	sudo systemctl start dhcpcd
+
+	sudo nano /etc/sysctl.conf
+	echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+	sudo sysctl -p
+
+	sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+	sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+	sudo apt install netfilter-persistent iptables-persistent
+	sudo netfilter-persistent save
+
+	sudo systemctl restart hostapd
+	sudo systemctl restart dnsmasq
+	sudo systemctl restart dhcpcd
+	sudo reboot
 }
 
 function select_confirm {
@@ -273,6 +361,11 @@ if [ ! -n "$modsel" ]; then
     select_mode
 fi
 
+if [ "$modsel" = "5" ]; then
+    clear
+	rasp_router
+fi
+
 if [ "$modsel" = "4" ]; then
   if ! [ -d "/home/pi/.config/chromium-profile/" ]; then
     if [ "$langsel" = "1" ]; then
@@ -383,7 +476,10 @@ else
     echo "Updating system..."
 fi
 sleep 2
+
 apt-get update && sudo apt-get -y upgrade
+sudo apt-get install systemd
+backup_remove
 
 clear
 serviceRunning=$(systemctl is-active cocktailpi)
@@ -413,7 +509,7 @@ else
 fi
 
 mkdir -p /root/cocktailpi
-wget -q --show-progress https://cloud.liggesmeyer.net/s/CALd2zEKx3dczm7/download/server.jar -O /root/cocktailpi/cocktailpi.jar
+wget -q --show-progress https://github.com/alex9849/CocktailPi/releases/latest/download/server.jar -O /root/cocktailpi/cocktailpi.jar
 if [ -f /etc/init.d/cocktailpi ]; then
     unlink /etc/init.d/cocktailpi
 fi
@@ -428,6 +524,7 @@ else
 fi
 systemctl daemon-reload
 update-rc.d cocktailpi defaults
+restoredata
 
 if [ "$langsel" = "1" ]; then
     echo "Starte CocktailPi Service..."
