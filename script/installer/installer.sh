@@ -182,43 +182,56 @@ function rasp_router {
 	sudo systemctl stop dnsmasq
 	sudo systemctl stop hostapd dnsmasq
 
-	sudo -u pi touch /etc/dhcpcd.conf
-	echo "interface wlan0" >> /etc/dhcpcd.conf
-	echo "static ip_address=192.168.1.11/24" >> /etc/dhcpcd.conf
-	echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
+	if [ -f /etc/dhcpcd.conf ]; then
+		rm -r /etc/dhcpcd.conf
+		sudo -u pi touch /etc/dhcpcd.conf
+		echo "interface wlan0" >> /etc/dhcpcd.conf
+		echo "static ip_address=192.168.1.9/24" >> /etc/dhcpcd.conf
+		echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
+	fi
 
-	sudo -u pi mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
-	sudo -u pi touch /etc/dnsmasq.conf
-	echo "interface=wlan0"  >> /etc/dnsmasq.conf
-	echo "dhcp-range=192.168.1.2,192.168.1.50,24h"  >> /etc/dnsmasq.conf
-	echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
-	echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
+	if [ -f /etc/dnsmasq.conf ]; then
+		sudo -u pi mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+		rm -r /etc/dnsmasq.conf
+		sudo -u pi touch /etc/dnsmasq.conf
+		echo "interface=wlan0"  >> /etc/dnsmasq.conf
+		echo "dhcp-range=192.168.1.2,192.168.1.50,24h"  >> /etc/dnsmasq.conf
+		echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
+		echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
+	fi
 
-	sudo -u pi touch /etc/hostapd/hostapd.conf
-	echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
-	echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
-	echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
-	echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
-	echo "channel=7"  >> /etc/hostapd/hostapd.conf
-	echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
-	echo "macaddr_acl=0"  >> /etc/hostapd/hostapd.conf
-	echo "auth_algs=1"  >> /etc/hostapd/hostapd.conf
-	echo "ignore_broadcast_ssid=0"  >> /etc/hostapd/hostapd.conf
-	echo "wpa=2"  >> /etc/hostapd/hostapd.conf
-	echo "wpa_passphrase=1234567890"  >> /etc/hostapd/hostapd.conf
-	echo "wpa_key_mgmt=WPA-PSK"  >> /etc/hostapd/hostapd.conf
-	echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
-	echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
+	if [ -f /etc/hostapd/hostapd.conf ]; then
+		pkill -f hostapd
+		rm -r /etc/hostapd/hostapd.conf 
+		sudo chmod 644 /etc/hostapd/hostapd.conf
+		echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
+		echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
+		echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
+		echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
+		echo "channel=7"  >> /etc/hostapd/hostapd.conf
+		echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
+		echo "macaddr_acl=0"  >> /etc/hostapd/hostapd.conf
+		echo "auth_algs=1"  >> /etc/hostapd/hostapd.conf
+		echo "ignore_broadcast_ssid=0"  >> /etc/hostapd/hostapd.conf
+		echo "wpa=2"  >> /etc/hostapd/hostapd.conf
+		echo "wpa_passphrase=1234567890"  >> /etc/hostapd/hostapd.conf
+		echo "wpa_key_mgmt=WPA-PSK"  >> /etc/hostapd/hostapd.conf
+		echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
+		echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
+		echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> /etc/hostapd/hostapd.conf
+		echo "update_config=1" >> /etc/hostapd/hostapd.conf	
+		pkill -f hostapd
+	fi
+	nohup hostapd /etc/hostapd/hostapd.conf
 
-	sudo -u pi touch /etc/hostapd/hostapd.conf
-	echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/hostapd/hostapd.conf
+	if [ -f /etc/default/hostapd ]; then
+		rm -r /etc/default/hostapd
+		sudo -u pi touch /etc/default/hostapd
+		echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/default/hostapd
+	fi
 
 	sudo -u pi cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
 	sudo -u pi cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
-
-	sudo -u pi touch /etc/hostapd/hostapd.conf
-	echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> /etc/hostapd/hostapd.conf
-	echo "update_config=1" >> /etc/hostapd/hostapd.conf
 
 	sudo systemctl unmask hostapd
 	sudo systemctl enable hostapd
@@ -226,8 +239,11 @@ function rasp_router {
 	sudo systemctl enable dhcpcd
 	sudo systemctl start dhcpcd
 
-	sudo -u pi touch /etc/sysctl.conf
-	echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+	if [ -f /etc/sysctl.conf ]; then
+		rm -r /etc/sysctl.conf
+		sudo -u pi touch /etc/sysctl.conf
+		echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+	fi
 	sudo sysctl -p
 
 	sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
