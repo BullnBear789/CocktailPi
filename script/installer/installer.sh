@@ -433,15 +433,13 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
-    select_mode
-	exit 1
+	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 fi
 
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
-	select_lang
-	exit 1
+	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 fi
 
 if [ "$modsel" = "5" ]; then
