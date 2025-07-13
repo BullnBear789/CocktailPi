@@ -192,12 +192,13 @@ function backup_cocktailpi {
 		mkdir -p /home/pi/Backup_CocktailPi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
 		echo "Backup completed successfully"
-		sleep 5
+		sleep 3
 	else
 		echo "No such file(cocktailpi-data.db)"
-		sleep 5
+		sleep 3
 	fi
-	exit 1
+	clear
+    select_mode
 }
 
 function restore_database {
@@ -208,7 +209,7 @@ function restore_database {
 		rm -rf /home/pi/Backup_CocktailPi
 	else
 		echo "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
-		sleep 5
+		sleep 3
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
@@ -218,7 +219,7 @@ function restore_database {
 				rm -rf /home/pi/Backup_cocktailPi-data.db
 			else
 				echo "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
-				sleep 5
+				sleep 3
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
@@ -432,14 +433,12 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
-	select_mode
 	exit 1
 fi
 
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
-	select_mode
 	exit 1
 fi
 
