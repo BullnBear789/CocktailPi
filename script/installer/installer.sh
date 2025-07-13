@@ -191,14 +191,14 @@ function backup_cocktailpi {
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_CocktailPi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
-		echo -n ""
-		echo -n "Backup completed successfully"
-		echo -n ""
+		echo ""
+		color g n "Backup completed successfully"
+		echo ""
 		sleep 1
 	else
-		echo -n ""
+		echo ""
 		color r n "No such file(cocktailpi-data.db)"
-		echo -n ""
+		echo ""
 		sleep 1
 	fi
 }
@@ -209,44 +209,45 @@ function restore_database {
 	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db ]; then
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
-		echo -n ""
-		echo -n "Successful Data Recovery"
-		echo -n ""
+		echo ""
+		color g n "Successful Data Recovery"
+		echo ""
 		sleep 2
 	else
-		echo -n ""
+		echo ""
+		echo "Please wait..."
+		echo ""
 		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
-		echo -n ""
-		echo -n "Please wait..."
+		echo ""
 		sleep 2
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
-			echo -n ""
-			echo -n "Successful Data Recovery 2"
-			echo -n ""
+			echo ""
+			color g n "Successful Data Recovery 2"
+			echo ""
 			sleep 2
 		else
 			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailPi-data.db
-				echo -n ""
-				echo -n "Successful Data Recovery 3"
-				echo -n ""
+				echo ""
+				color g n "Successful Data Recovery 3"
+				echo ""
 				sleep 2
 			else
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
-					echo -n ""
-					echo -n "Successful Data Recovery 4"
-					echo -n ""
+					echo ""
+					color g n"Successful Data Recovery 4"
+					echo ""
 					sleep 2
 				else
-					echo -n ""
+					echo ""
 					color r n "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
-					echo -n ""
-					sleep 5
+					echo ""
+					sleep 4
 				fi
 			fi
 		fi
