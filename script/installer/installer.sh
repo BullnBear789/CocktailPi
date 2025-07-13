@@ -219,6 +219,7 @@ function restore_database {
 		echo "Please wait..."
 		echo ""
 		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
+		echo ""
 		sleep 1
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
