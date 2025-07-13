@@ -433,7 +433,6 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
-	clear
     select_mode
 	exit 1
 fi
@@ -441,9 +440,7 @@ fi
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
-	clear
-    select_mode
-	exit 1
+    return select_mode
 fi
 
 if [ "$modsel" = "5" ]; then
