@@ -245,7 +245,7 @@ function restore_database {
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
 					echo ""
-					color g n"Successful Data Recovery"
+					color g n "Successful Data Recovery"
 					echo ""
 					echo ""
 					sleep 1
