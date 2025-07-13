@@ -210,7 +210,7 @@ function restore_database {
 	service cocktailpi stop
 	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db ] || [ -f /home/pi/Backup_CocktailPi/cocktailpi-data.db ]; then
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-		cp -r -b /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+		cp -r /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
 		echo ""
 		color g n "Successful Data Recovery"
@@ -235,7 +235,7 @@ function restore_database {
 		else
 			if [ -f /home/pi/Backup_cocktailpi-data.db ] || [ -f /home/pi/cocktailpi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-				cp -r -b /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+				cp -r /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailpi-data.db
 				rm -rf /home/pi/cocktailpi-data.db
 				echo ""
