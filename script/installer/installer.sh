@@ -208,7 +208,7 @@ function backup_cocktailpi {
 function restore_database {
     clear
 	service cocktailpi stop
-	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db || /home/pi/Backup_CocktailPi/cocktailpi-data.db ]; then
+	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db ] || [ -f /home/pi/Backup_CocktailPi/cocktailpi-data.db ]; then
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 		cp -r -b /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
@@ -233,7 +233,7 @@ function restore_database {
 			echo ""
 			sleep 1
 		else
-			if [ -f /home/pi/Backup_cocktailpi-data.db || /home/pi/cocktailpi-data.db ]; then
+			if [ -f /home/pi/Backup_cocktailpi-data.db ] || [ -f /home/pi/cocktailpi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 				cp -r -b /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailpi-data.db
