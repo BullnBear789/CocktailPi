@@ -224,7 +224,7 @@ function rasp_router {
 	if [ -f /etc/default/hostapd ]; then
 		rm -r /etc/default/hostapd
 		sudo touch /etc/default/hostapd
-		echo "DAEMON_CONF=" && ""/etc/hostapd/hostapd.conf"" >> /etc/default/hostapd
+		echo "DAEMON_CONF="""/etc/hostapd/hostapd.conf"" >> /etc/default/hostapd
 	fi
 
 	sudo systemctl unmask hostapd
