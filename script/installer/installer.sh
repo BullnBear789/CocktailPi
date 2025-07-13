@@ -192,12 +192,12 @@ function backup_cocktailpi {
 		mkdir -p /home/pi/Backup_CocktailPi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
 		echo ""
-		echo "Backup completed successfully"
+		echo -n "Backup completed successfully"
 		echo ""
 		sleep 1
 	else
 		echo ""
-		echo "No such file(cocktailpi-data.db)"
+		color r n "No such file(cocktailpi-data.db)"
 		echo ""
 		sleep 1
 	fi
@@ -210,21 +210,20 @@ function restore_database {
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
 		echo ""
-		echo "Successful Data Recovery"
+		echo -n "Successful Data Recovery"
 		echo ""
 		sleep 2
 	else
 		echo ""
-		echo "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
+		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
 		echo ""
-		echo "Please wait..."
-		echo ""
+		echo -n "Please wait..."
 		sleep 2
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
 			echo ""
-			echo "Successful Data Recovery 2"
+			echo -n "Successful Data Recovery 2"
 			echo ""
 			sleep 2
 		else
@@ -232,7 +231,7 @@ function restore_database {
 				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailPi-data.db
 				echo ""
-				echo "Successful Data Recovery 3"
+				echo -n "Successful Data Recovery 3"
 				echo ""
 				sleep 2
 			else
@@ -240,12 +239,12 @@ function restore_database {
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
 					echo ""
-					echo "Successful Data Recovery 4"
+					echo -n "Successful Data Recovery 4"
 					echo ""
 					sleep 2
 				else
 					echo ""
-					echo "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
+					color r n "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
 					echo ""
 					sleep 5
 				fi
