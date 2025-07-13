@@ -186,7 +186,7 @@ function rasp_router {
 		rm -r /etc/dhcpcd.conf
 		sudo -u pi touch /etc/dhcpcd.conf
 		echo "interface wlan0" >> /etc/dhcpcd.conf
-		echo "static ip_address=192.168.1.9/24" >> /etc/dhcpcd.conf
+		echo "static ip_address=192.168.1.7/24" >> /etc/dhcpcd.conf
 		echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
 	fi
 
@@ -195,18 +195,17 @@ function rasp_router {
 		rm -r /etc/dnsmasq.conf
 		sudo touch /etc/dnsmasq.conf
 		echo "interface=wlan0"  >> /etc/dnsmasq.conf
-		echo "dhcp-range=192.168.1.5,192.168.1.50,24h"  >> /etc/dnsmasq.conf
+		echo "dhcp-range=192.168.1.4,192.168.1.40,24h"  >> /etc/dnsmasq.conf
 		echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
 		echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
 	fi
 
 	if [ -f /etc/hostapd/hostapd.conf ]; then
-		pkill -f hostapd
-		rm -r /etc/hostapd/hostapd.conf 
+		clear 
 		sudo touch /etc/hostapd/hostapd.conf
 		echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
 		echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
-		echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
+		echo "ssid=AccRaspSweet"  >> /etc/hostapd/hostapd.conf
 		echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
 		echo "channel=7"  >> /etc/hostapd/hostapd.conf
 		echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
@@ -220,9 +219,7 @@ function rasp_router {
 		echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
 		echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" >> /etc/hostapd/hostapd.conf
 		echo "update_config=1" >> /etc/hostapd/hostapd.conf	
-		pkill -f hostapd
 	fi
-	nohup hostapd /etc/hostapd/hostapd.conf
 
 	if [ -f /etc/default/hostapd ]; then
 		rm -r /etc/default/hostapd
