@@ -191,8 +191,10 @@ function backup_cocktailpi {
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_CocktailPi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
+		echo "Backup completed successfully"
 	else
 		echo "No such file(cocktailpi-data.db)"
+	exit 3
 	fi
 }
 
@@ -219,6 +221,7 @@ function restore_database {
 				fi
 			fi
 		fi
+	exit 3
 	fi
 	service cocktailpi start
 }
@@ -426,13 +429,13 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
-	exit 1
+	select_mode
 fi
 
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
-	exit 1
+	select_mode
 fi
 
 if [ "$modsel" = "5" ]; then
