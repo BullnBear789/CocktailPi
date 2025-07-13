@@ -194,7 +194,7 @@ function backup_cocktailpi {
 		echo "Backup completed successfully"
 	else
 		echo "No such file(cocktailpi-data.db)"
-	exit 5
+	sleep 100
 	fi
 }
 
@@ -221,7 +221,7 @@ function restore_database {
 				fi
 			fi
 		fi
-	exit 5
+	sleep 100
 	fi
 	service cocktailpi start
 }
@@ -429,6 +429,7 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
+	clear
 	select_mode
 	exit 1
 fi
@@ -436,6 +437,7 @@ fi
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
+	clear
 	select_mode
 	exit 1
 fi
