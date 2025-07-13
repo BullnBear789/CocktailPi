@@ -179,7 +179,6 @@ function rasp_router {
 	apt-get update && sudo apt-get -y upgrade
 	sudo apt-get install dhcpcd5 -n
 	sudo apt install hostapd dnsmasq
-	sudo systemctl stop dnsmasq
 	sudo systemctl stop hostapd dnsmasq
 
 	if [ -f /etc/dhcpcd.conf ]; then
@@ -224,7 +223,7 @@ function rasp_router {
 	if [ -f /etc/default/hostapd ]; then
 		rm -r /etc/default/hostapd
 		sudo touch /etc/default/hostapd
-		echo "'DAEMON_CONF="/etc/hostapd/hostapd.conf"'" >> /etc/default/hostapd
+		echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' >> /etc/default/hostapd
 	fi
 
 	sudo systemctl unmask hostapd
