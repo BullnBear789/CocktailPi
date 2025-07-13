@@ -171,18 +171,18 @@ function select_mode {
 function clean_install {
 	clear
 	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi
-	sudo -u pi rm -rf /home/pi/cocktailpi-installer.sh
-	sudo -u pi rm -rf /root/cocktailpi-installer.sh
-	sudo -u pi rm -rf /root/cocktailpi
-	sudo -u pi rm -rf /var/log/cocktailpi.log
-	sudo -u pi rm -rf /etc/init.d/cocktailpi
+	sudo rm -rf /home/pi/cocktailpi-installer.sh
+	sudo rm -rf /root/cocktailpi-installer.sh
+	sudo rm -rf /root/cocktailpi
+	sudo rm -rf /var/log/cocktailpi.log
+	sudo rm -rf /etc/init.d/cocktailpi
 }
 
 function replace_database {
     clear
 	service cocktailpi stop
 	sudo cp -r /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi
-	sudo -u pi rm -rf /home/pi/Backup_CocktailPi
+	sudo rm -rf /home/pi/Backup_CocktailPi
 	service cocktailpi start
 }
 
@@ -426,16 +426,19 @@ fi
 if [ "$modsel" = "7" ]; then
     clear
 	restore_database
+	exit 1
 fi
 
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
+	exit 1
 fi
 
 if [ "$modsel" = "5" ]; then
     clear
 	rasp_router
+	exit 0
 fi
 
 if [ "$modsel" = "4" ]; then
