@@ -651,11 +651,6 @@ if [ -f /home/pi/.config/wayfire.ini ]; then
     rm -r /home/pi/.config/wayfire.ini
 fi
 sudo -u pi touch /home/pi/.config/wayfire.ini
-
-echo "[core]" >> /home/pi/.config/wayfire.ini
-echo "plugins = \\" >> /home/pi/.config/wayfire.ini
-echo "        autostart" >> /home/pi/.config/wayfire.ini
-echo "" >> /home/pi/.config/wayfire.ini
 echo "[autostart]" >> /home/pi/.config/wayfire.ini
 echo "chromium = chromium-browser /home/pi/wait-for-app-html/index.html --kiosk --noerrdialogs --enable-extensions --disable-component-update --check-for-update-interval=31536000 --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --disable-features=OverscrollHistoryNavigation --start-maximized --user-data-dir=/home/pi/.config/chromium-profile" >> /home/pi/.config/wayfire.ini
 echo "screensaver = false" >> /home/pi/.config/wayfire.ini
@@ -670,14 +665,4 @@ if [ "$modsel" = "3" ] || [ "$modsel" = "2" ]; then
     nohup wayfire -c /home/pi/.config/wayfire.ini > /dev/null 2>&1 < /dev/null & disown
 fi
 
-if [ "$langsel" = "1" ]; then
-    echo "CocktailPi wurde installiert und startet jetzt im Hintergrund."
-    echo "Es kann einige Zeit dauer, bis sich die Software für den ersten start initialisiert hat."
-  	echo ""
-  	echo "Wenn dir das Projekt gefällt, kannst du es gerne auf GitHub \"starren\" ;)"
-else
-    echo "CocktailPi has been installed and is currently starting in the background."
-    echo "It can take a while, till the software initialized itself for the first start."
-	  echo ""
-	  echo "If you like the project, please consider to \"star\" it on GitHub ;)"
-fi
+sudo reboot
