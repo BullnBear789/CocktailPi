@@ -212,42 +212,46 @@ function restore_database {
 		echo ""
 		color g n "Successful Data Recovery"
 		echo ""
-		sleep 2
+		echo ""
+		sleep 1
 	else
 		echo ""
 		echo "Please wait..."
 		echo ""
 		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
-		echo ""
-		sleep 2
+		sleep 1
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
 			echo ""
-			color g n "Successful Data Recovery 2"
+			color g n "Successful Data Recovery"
 			echo ""
-			sleep 2
+			echo ""
+			sleep 1
 		else
 			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailPi-data.db
 				echo ""
-				color g n "Successful Data Recovery 3"
+				color g n "Successful Data Recovery"
 				echo ""
-				sleep 2
+				echo ""
+				sleep 1
 			else
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
 					echo ""
-					color g n"Successful Data Recovery 4"
+					color g n"Successful Data Recovery"
 					echo ""
-					sleep 2
+					echo ""
+					sleep 1
 				else
 					echo ""
 					color r n "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
 					echo ""
-					sleep 4
+					echo ""
+					sleep 1
 				fi
 			fi
 		fi
