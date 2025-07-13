@@ -191,11 +191,11 @@ function rasp_router {
 	fi
 
 	if [ -f /etc/dnsmasq.conf ]; then
-		sudo -u pi mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+		sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 		rm -r /etc/dnsmasq.conf
-		sudo -u pi touch /etc/dnsmasq.conf
+		sudo touch /etc/dnsmasq.conf
 		echo "interface=wlan0"  >> /etc/dnsmasq.conf
-		echo "dhcp-range=192.168.1.2,192.168.1.50,24h"  >> /etc/dnsmasq.conf
+		echo "dhcp-range=192.168.1.5,192.168.1.50,24h"  >> /etc/dnsmasq.conf
 		echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
 		echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
 	fi
@@ -203,7 +203,7 @@ function rasp_router {
 	if [ -f /etc/hostapd/hostapd.conf ]; then
 		pkill -f hostapd
 		rm -r /etc/hostapd/hostapd.conf 
-		sudo chmod 644 /etc/hostapd/hostapd.conf
+		sudo touch /etc/hostapd/hostapd.conf
 		echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
 		echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
 		echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
@@ -226,12 +226,12 @@ function rasp_router {
 
 	if [ -f /etc/default/hostapd ]; then
 		rm -r /etc/default/hostapd
-		sudo -u pi touch /etc/default/hostapd
+		sudo touch /etc/default/hostapd
 		echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/default/hostapd
 	fi
 
-	sudo -u pi cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
-	sudo -u pi cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
+	sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
+	sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
 
 	sudo systemctl unmask hostapd
 	sudo systemctl enable hostapd
@@ -241,7 +241,7 @@ function rasp_router {
 
 	if [ -f /etc/sysctl.conf ]; then
 		rm -r /etc/sysctl.conf
-		sudo -u pi touch /etc/sysctl.conf
+		sudo touch /etc/sysctl.conf
 		echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 	fi
 	sudo sysctl -p
