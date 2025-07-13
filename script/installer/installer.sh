@@ -208,8 +208,9 @@ function backup_cocktailpi {
 function restore_database {
     clear
 	service cocktailpi stop
-	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db ]; then
-		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
+	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db || cocktailpi-data.db ]; then
+		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+		cp -r -b /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
 		echo ""
 		color g n "Successful Data Recovery"
@@ -220,7 +221,7 @@ function restore_database {
 		echo ""
 		echo "Please wait..."
 		echo ""
-		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
+		color r n "'/home/pi/Backup_CocktailPi/cocktailpi-data.db: No such file or directory'"
 		echo ""
 		sleep 1
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
@@ -232,9 +233,11 @@ function restore_database {
 			echo ""
 			sleep 1
 		else
-			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
-				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
-				rm -rf /home/pi/Backup_cocktailPi-data.db
+			if [ -f /home/pi/Backup_cocktailpi-data.db || cocktailpi-data.db ]; then
+				cp -r -b /home/pi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+				cp -r -b /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+				rm -rf /home/pi/Backup_cocktailpi-data.db
+				rm -rf /home/pi/cocktailpi-data.db
 				echo ""
 				color g n "Successful Data Recovery"
 				echo ""
@@ -251,7 +254,7 @@ function restore_database {
 					sleep 1
 				else
 					echo ""
-					color r n "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
+					color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
 					echo ""
 					echo ""
 					sleep 1
