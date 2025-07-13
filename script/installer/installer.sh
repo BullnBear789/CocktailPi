@@ -479,7 +479,7 @@ fi
 if [ "$modsel" = "5" ]; then
     clear
 	rasp_router
-	exit 0
+	exit 1
 fi
 
 if [ "$modsel" = "4" ]; then
