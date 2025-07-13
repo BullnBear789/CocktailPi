@@ -440,7 +440,10 @@ fi
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
-    return select_mode
+    if [ ! -n "$modsel" ]; then
+    select_mode
+	fi
+	exit 1
 fi
 
 if [ "$modsel" = "5" ]; then
