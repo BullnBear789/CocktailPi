@@ -186,8 +186,8 @@ function rasp_router {
 		rm -r /etc/dhcpcd.conf
 		sudo -u pi touch /etc/dhcpcd.conf
 		echo "interface wlan0" >> /etc/dhcpcd.conf
-		echo "static ip_address=192.168.1.7/24" >> /etc/dhcpcd.conf
-		echo "denyinterfaces eth0 wlan0 usb0" >> /etc/dhcpcd.conf
+		echo "static ip_address=192.168.1.4/24" >> /etc/dhcpcd.conf
+		echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf
 	fi
 
 	if [ -f /etc/dnsmasq.conf ]; then
@@ -195,17 +195,17 @@ function rasp_router {
 		rm -r /etc/dnsmasq.conf
 		sudo touch /etc/dnsmasq.conf
 		echo "interface=wlan0"  >> /etc/dnsmasq.conf
-		echo "dhcp-range=192.168.1.4,192.168.1.40,24h"  >> /etc/dnsmasq.conf
+		echo "dhcp-range=192.168.1.5,192.168.1.45,24h"  >> /etc/dnsmasq.conf
 		echo "server=8.8.8.8"  >> /etc/dnsmasq.conf
 		echo "server=8.8.4.4"  >> /etc/dnsmasq.conf
 	fi
 
 	if [ -f /etc/hostapd/hostapd.conf ]; then
-		clear 
+		rm -r /etc/hostapd/hostapd.conf
 		sudo touch /etc/hostapd/hostapd.conf
 		echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
 		echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
-		echo "ssid=AccRaspSweet"  >> /etc/hostapd/hostapd.conf
+		echo "ssid=RaspCocktail"  >> /etc/hostapd/hostapd.conf
 		echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
 		echo "channel=7"  >> /etc/hostapd/hostapd.conf
 		echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
@@ -213,7 +213,7 @@ function rasp_router {
 		echo "auth_algs=1"  >> /etc/hostapd/hostapd.conf
 		echo "ignore_broadcast_ssid=0"  >> /etc/hostapd/hostapd.conf
 		echo "wpa=2"  >> /etc/hostapd/hostapd.conf
-		echo "wpa_passphrase=1234567890"  >> /etc/hostapd/hostapd.conf
+		echo "wpa_passphrase=9876543210"  >> /etc/hostapd/hostapd.conf
 		echo "wpa_key_mgmt=WPA-PSK"  >> /etc/hostapd/hostapd.conf
 		echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
 		echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
@@ -227,15 +227,15 @@ function rasp_router {
 		echo "DAEMON_CONF="/etc/hostapd/hostapd.conf"" >> /etc/default/hostapd
 	fi
 
-	sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
-	sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
-
 	sudo systemctl unmask hostapd
 	sudo systemctl enable hostapd
 	sudo systemctl start hostapd
 	sudo systemctl enable dhcpcd
 	sudo systemctl start dhcpcd
 
+	sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav 
+	sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
+	
 	if [ -f /etc/sysctl.conf ]; then
 		rm -r /etc/sysctl.conf
 		sudo touch /etc/sysctl.conf
