@@ -101,6 +101,8 @@ function select_mode {
         echo "(3) CocktailPi + Touchscreen with on-screen keyboard"
         echo "(4) Configuration: Change size of Touchscreen UI"
 		echo "(5) Router"
+		echo "(6) Backup CocktailPi"
+		echo "(7) Restore Database"
         echo ""
         echo "(0) Exit"
     fi
@@ -110,13 +112,13 @@ function select_mode {
         if [ "$modsel" = "" ]; then
             echo -n "Bitte geben Sie ihre Auswahl an: "
         else
-            color r n "Bitte geben Sie entweder 1,2,3,4,5 oder 0 ein: "
+            color r n "Bitte geben Sie entweder 1,2,3,4,5,6,7 oder 0 ein: "
         fi
     else
         if [ "$modsel" = "" ]; then
             echo -n "Please enter your selection: "
         else
-            color r n "Please enter either 1,2,3,4,5 or 0: "
+            color r n "Please enter either 1,2,3,4,5,6,7 or 0: "
         fi
     fi
 
@@ -144,6 +146,12 @@ function select_mode {
         ;;
         '5')
             clear
+		;;
+        '6')
+            clear
+		;;
+        '7')
+            clear
         ;;
         '0')
             clear
@@ -158,21 +166,59 @@ function select_mode {
     done
 }
 
-function backup_remove {
+function CleanInstall {
 	clear
-	sudo rm -rf /root/cocktailpi/cocktailpi.jar
-	sudo cp -r /root/cocktailpi /home/pi/Backup-CocktailPi
-	sudo rm -rf /home/pi/cocktailpi-installer.sh
-	sudo rm -rf /root/cocktailpi-installer.sh
-	sudo rm -rf /root/cocktailpi
-	sudo rm -rf /var/log/cocktailpi.log
-	sudo rm -rf /etc/init.d/cocktailpi
+	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi
+	sudo -u pi rm -rf /home/pi/cocktailpi-installer.sh
+	sudo -u pi rm -rf /root/cocktailpi-installer.sh
+	sudo -u pi rm -rf /root/cocktailpi
+	sudo -u pi rm -rf /var/log/cocktailpi.log
+	sudo -u pi rm -rf /etc/init.d/cocktailpi
 }
 
-function restoredata {
+function replace_database {
     clear
-	sudo cp -r /home/pi/Backup_CocktailPi/ /root/cocktailpi
-	sudo rm -rf /home/pi/Backup_CocktailPi
+	service cocktailpi stop
+	sudo cp -r /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi
+	sudo -u pi rm -rf /home/pi/Backup_CocktailPi
+	service cocktailpi start
+}
+
+function backup_cocktailPi {
+    clear
+	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
+		mkdir -p /home/pi/Backup_CocktailPi
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db 
+	else
+		echo "No such file(cocktailpi-data.db)"
+	fi
+}
+
+function restore_database {
+    clear
+	service cocktailpi stop
+	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db ]; then
+		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+		rm -rf /home/pi/Backup_CocktailPi
+	else
+		echo "'/home/pi/Backup_CocktailPi/Backup_Cocktailpi-data.db: No such file or directory'"
+		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
+			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
+			rm -rf /home/pi/Backup_CocktailPi
+		else
+			if [ -f /home/pi/Backup_Cocktailpi-data.db ]; then
+				cp -r -b /home/pi/Backup_Cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+				rm -rf /home/pi/Backup_Cocktailpi-data.db
+			else
+				echo "'/home/pi/Backup_Cocktailpi-data.db: No such file or directory'"
+				if [ -f /home/pi/*.db ]; then
+					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
+					rm -rf /home/pi/*.db
+				fi
+			fi
+		fi
+	fi
+	service cocktailpi start
 }
 
 function rasp_router {
@@ -375,6 +421,15 @@ if [ ! -n "$modsel" ]; then
     select_mode
 fi
 
+if [ "$modsel" = "7" ]; then
+    clear
+	restore_database
+fi
+
+if [ "$modsel" = "6" ]; then
+    clear
+	backup_cocktailPi
+
 if [ "$modsel" = "5" ]; then
     clear
 	rasp_router
@@ -493,7 +548,9 @@ sleep 2
 
 apt-get update && sudo apt-get -y upgrade
 sudo apt-get install systemd
-backup_remove
+sudo apt install mtools
+sudo apt install e2fsprogs
+CleanInstall
 
 clear
 serviceRunning=$(systemctl is-active cocktailpi)
@@ -538,7 +595,7 @@ else
 fi
 systemctl daemon-reload
 update-rc.d cocktailpi defaults
-restoredata
+replace_database
 
 if [ "$langsel" = "1" ]; then
     echo "Starte CocktailPi Service..."
