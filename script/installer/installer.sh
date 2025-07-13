@@ -110,13 +110,13 @@ function select_mode {
         if [ "$modsel" = "" ]; then
             echo -n "Bitte geben Sie ihre Auswahl an: "
         else
-            color r n "Bitte geben Sie entweder 1,2,3,4 oder 0 ein: "
+            color r n "Bitte geben Sie entweder 1,2,3,4,5 oder 0 ein: "
         fi
     else
         if [ "$modsel" = "" ]; then
             echo -n "Please enter your selection: "
         else
-            color r n "Please enter either 1,2,3,4 or 0: "
+            color r n "Please enter either 1,2,3,4,5 or 0: "
         fi
     fi
 
@@ -160,18 +160,19 @@ function select_mode {
 
 function backup_remove {
 	clear
-	sudo -u pi cp -r /root/cocktailpi/Cocktailpi-data.db /home/pi/Backup_CocktailPi
-	sudo -u pi rm -rf /home/pi/cocktailpi-installer.sh
-	sudo -u pi rm -rf /root/cocktailpi
-	sudo -u pi rm -rf /root/cocktailpi-installer.sh
-	sudo -u pi rm -rf /var/log/cocktailpi.log
-	sudo -u pi rm -rf /etc/init.d/cocktailpi
+	sudo rm -rf /root/cocktailpi/cocktailpi.jar
+	sudo cp -r /root/cocktailpi /home/pi/Backup_CocktailPi
+	sudo rm -rf /home/pi/cocktailpi-installer.sh
+	sudo rm -rf /root/cocktailpi-installer.sh
+	sudo rm -rf /root/cocktailpi
+	sudo rm -rf /var/log/cocktailpi.log
+	sudo rm -rf /etc/init.d/cocktailpi
 }
 
 function restoredata {
     clear
-	sudo -u pi cp -r /home/pi/Backup_CocktailPi/ Cocktailpi-data.db /root/cocktailpi
-	sudo -u pi rm -rf /home/pi/Backup_CocktailPi
+	sudo cp -r /home/pi/Backup_CocktailPi /root/cocktailpi
+	sudo rm -rf /home/pi/Backup_CocktailPi
 }
 
 function rasp_router {
