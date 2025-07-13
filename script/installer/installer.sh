@@ -191,14 +191,14 @@ function backup_cocktailpi {
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_CocktailPi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
-		echo ""
+		echo -n ""
 		echo -n "Backup completed successfully"
-		echo ""
+		echo -n ""
 		sleep 1
 	else
-		echo ""
+		echo -n ""
 		color r n "No such file(cocktailpi-data.db)"
-		echo ""
+		echo -n ""
 		sleep 1
 	fi
 }
@@ -209,43 +209,43 @@ function restore_database {
 	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db ]; then
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
-		echo ""
+		echo -n ""
 		echo -n "Successful Data Recovery"
-		echo ""
+		echo -n ""
 		sleep 2
 	else
-		echo ""
+		echo -n ""
 		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
-		echo ""
+		echo -n ""
 		echo -n "Please wait..."
 		sleep 2
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
-			echo ""
+			echo -n ""
 			echo -n "Successful Data Recovery 2"
-			echo ""
+			echo -n ""
 			sleep 2
 		else
 			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailPi-data.db
-				echo ""
+				echo -n ""
 				echo -n "Successful Data Recovery 3"
-				echo ""
+				echo -n ""
 				sleep 2
 			else
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
-					echo ""
+					echo -n ""
 					echo -n "Successful Data Recovery 4"
-					echo ""
+					echo -n ""
 					sleep 2
 				else
-					echo ""
+					echo -n ""
 					color r n "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
-					echo ""
+					echo -n ""
 					sleep 5
 				fi
 			fi
