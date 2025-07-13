@@ -195,11 +195,13 @@ function backup_cocktailpi {
 		color g n "Backup completed successfully"
 		echo ""
         echo ""
+        echo ""
 		sleep 1
 	else
 		echo ""
 		color r n "No such file(cocktailpi-data.db)"
 		echo ""
+        echo ""
         echo ""
 		sleep 1
 	fi
