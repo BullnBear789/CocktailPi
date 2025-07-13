@@ -428,22 +428,17 @@ fi
 
 if [ ! -n "$modsel" ]; then
     select_mode
-fi
-
-if [ "$modsel" = "7" ]; then
-    clear
-	restore_database
-    select_mode
-	exit 1
-fi
-
-if [ "$modsel" = "6" ]; then
-    clear
-	backup_cocktailpi
-    if [ ! -n "$modsel" ]; then
-    select_mode
+	if [ "$modsel" = "7" ]; then
+		clear
+		restore_database
+		select_mode
 	fi
-	exit 1
+
+	if [ "$modsel" = "6" ]; then
+		clear
+		backup_cocktailpi
+		select_mode
+	fi
 fi
 
 if [ "$modsel" = "5" ]; then
