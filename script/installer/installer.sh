@@ -161,7 +161,7 @@ function select_mode {
 function backup_remove {
 	clear
 	sudo rm -rf /root/cocktailpi/cocktailpi.jar
-	sudo cp -r /root/cocktailpi /home/pi/Backup_CocktailPi
+	sudo cp -r /root/cocktailpi /home/pi/Backup-CocktailPi
 	sudo rm -rf /home/pi/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi
@@ -171,7 +171,7 @@ function backup_remove {
 
 function restoredata {
     clear
-	sudo cp -r /home/pi/Backup_CocktailPi /root/cocktailpi
+	sudo cp -r /home/pi/Backup_CocktailPi/ /root/cocktailpi
 	sudo rm -rf /home/pi/Backup_CocktailPi
 }
 
