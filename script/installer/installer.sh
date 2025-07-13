@@ -207,22 +207,36 @@ function restore_database {
 	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db ]; then
 		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
+		echo "Successful Data Recovery"
+		sleep 2
+		echo ""
 	else
 		echo "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
-		sleep 1
+		sleep 2
+		echo "Please wait..."
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
+			echo "Successful Data Recovery 2"
+			sleep 2
+			echo ""
 		else
 			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
 				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 				rm -rf /home/pi/Backup_cocktailPi-data.db
+				echo "Successful Data Recovery 3"
+				sleep 2
+				echo ""
 			else
-				echo "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
-				sleep 1
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
+					echo "Successful Data Recovery 4"
+					sleep 2
+					echo ""
+				else
+					echo "#'/home/pi/Backup_cocktailPi-data.db: No such file or directory'#"
+					sleep 2
 				fi
 			fi
 		fi
