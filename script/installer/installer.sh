@@ -89,6 +89,8 @@ function select_mode {
         echo "(3) CocktailPi + Touchscreen mit Bildschirmtastatur"
         echo "(4) Konfiguration: Größe der Touchscreen UI ändern"
 		echo "(5) Router"
+		echo "(6) Backup CocktailPi"
+		echo "(7) Restore Database"
         echo ""
         echo "(0) Exit"
     else
@@ -166,7 +168,7 @@ function select_mode {
     done
 }
 
-function CleanInstall {
+function clean_install {
 	clear
 	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi
 	sudo -u pi rm -rf /home/pi/cocktailpi-installer.sh
@@ -184,11 +186,11 @@ function replace_database {
 	service cocktailpi start
 }
 
-function backup_cocktailPi {
+function backup_cocktailpi {
     clear
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_CocktailPi
-		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db 
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db 
 	else
 		echo "No such file(cocktailpi-data.db)"
 	fi
@@ -197,20 +199,20 @@ function backup_cocktailPi {
 function restore_database {
     clear
 	service cocktailpi stop
-	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db ]; then
-		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db ]; then
+		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/Backup_CocktailPi
 	else
-		echo "'/home/pi/Backup_CocktailPi/Backup_Cocktailpi-data.db: No such file or directory'"
+		echo "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/Backup_CocktailPi
 		else
-			if [ -f /home/pi/Backup_Cocktailpi-data.db ]; then
-				cp -r -b /home/pi/Backup_Cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-				rm -rf /home/pi/Backup_Cocktailpi-data.db
+			if [ -f /home/pi/Backup_cocktailPi-data.db ]; then
+				cp -r -b /home/pi/Backup_cocktailPi-data.db /root/cocktailpi/cocktailpi-data.db
+				rm -rf /home/pi/Backup_cocktailPi-data.db
 			else
-				echo "'/home/pi/Backup_Cocktailpi-data.db: No such file or directory'"
+				echo "'/home/pi/Backup_cocktailPi-data.db: No such file or directory'"
 				if [ -f /home/pi/*.db ]; then
 					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
 					rm -rf /home/pi/*.db
@@ -428,7 +430,7 @@ fi
 
 if [ "$modsel" = "6" ]; then
     clear
-	backup_cocktailPi
+	backup_cocktailpi
 
 if [ "$modsel" = "5" ]; then
     clear
@@ -550,7 +552,7 @@ apt-get update && sudo apt-get -y upgrade
 sudo apt-get install systemd
 sudo apt install mtools
 sudo apt install e2fsprogs
-CleanInstall
+clean_install
 
 clear
 serviceRunning=$(systemctl is-active cocktailpi)
