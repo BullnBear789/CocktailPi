@@ -195,13 +195,11 @@ function backup_cocktailpi {
 		color g n "Backup completed successfully"
 		echo ""
         echo ""
-        echo ""
 		sleep 1
 	else
 		echo ""
 		color r n "No such file(cocktailpi-data.db)"
 		echo ""
-        echo ""
         echo ""
 		sleep 1
 	fi
@@ -224,7 +222,6 @@ function restore_database {
 		echo ""
 		color r n "'/home/pi/Backup_CocktailPi/Backup_cocktailPi-data.db: No such file or directory'"
 		echo ""
-        echo ""
 		sleep 1
 		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
 			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
