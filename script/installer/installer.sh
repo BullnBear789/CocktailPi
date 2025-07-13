@@ -431,6 +431,7 @@ fi
 if [ "$modsel" = "6" ]; then
     clear
 	backup_cocktailpi
+fi
 
 if [ "$modsel" = "5" ]; then
     clear
