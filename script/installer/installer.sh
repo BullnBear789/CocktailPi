@@ -89,10 +89,10 @@ function select_mode {
         echo "(3) CocktailPi + Touchscreen mit Bildschirmtastatur"
         echo "(4) Konfiguration: Größe der Touchscreen UI ändern"
 		echo "(5) Router"
-		echo "(6) Backup CocktailPi"
+		echo "(6) Backup Database"
 		echo "(7) Restore Database"
-		echo "(8) Restart"
         echo ""
+		echo "(8) Reboot"
         echo "(0) Exit"
     else
         echo "Installation selection"
@@ -104,10 +104,10 @@ function select_mode {
         echo "(3) CocktailPi + Touchscreen with on-screen keyboard"
         echo "(4) Configuration: Change size of Touchscreen UI"
 		echo "(5) Router"
-		echo "(6) Backup CocktailPi"
+		echo "(6) Backup Database"
 		echo "(7) Restore Database"
-		echo "(8) Restart"
-        echo ""
+		echo ""
+		echo "(8) Reboot"
         echo "(0) Exit"
     fi
     echo ""
@@ -116,13 +116,13 @@ function select_mode {
         if [ "$modsel" = "" ]; then
             echo -n "Bitte geben Sie ihre Auswahl an: "
         else
-            color r n "Bitte geben Sie entweder 1,2,3,4,5,6,7 oder 0 ein: "
+            color r n "Bitte geben Sie entweder 1,2,3,4,5,6,7,8 oder 0 ein: "
         fi
     else
         if [ "$modsel" = "" ]; then
             echo -n "Please enter your selection: "
         else
-            color r n "Please enter either 1,2,3,4,5,6,7 or 0: "
+            color r n "Please enter either 1,2,3,4,5,6,7,8 or 0: "
         fi
     fi
 
@@ -447,7 +447,7 @@ fi
 
 if [ "$modsel" = "8" ]; then
     clear
-	sudo restart
+	sudo reboot
 	exit 0
 fi
 
