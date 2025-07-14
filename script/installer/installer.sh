@@ -91,6 +91,7 @@ function select_mode {
 		echo "(5) Router"
 		echo "(6) Backup CocktailPi"
 		echo "(7) Restore Database"
+		echo "(8) Restart"
         echo ""
         echo "(0) Exit"
     else
@@ -105,6 +106,7 @@ function select_mode {
 		echo "(5) Router"
 		echo "(6) Backup CocktailPi"
 		echo "(7) Restore Database"
+		echo "(8) Restart"
         echo ""
         echo "(0) Exit"
     fi
@@ -155,6 +157,9 @@ function select_mode {
         '7')
             clear
         ;;
+        '8')
+            clear
+        ;;		
         '0')
             clear
             exit 0
@@ -211,7 +216,7 @@ function restore_database {
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 		rm -rf /home/pi/cocktailpi-data.db
 		echo ""
-		color g n "Successful Data Recovery #1"
+		color g n "Database restored successfully"
 		echo ""
 		echo ""
 		sleep 1
@@ -221,12 +226,11 @@ function restore_database {
 		echo ""
 		color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
 		echo ""
-		sleep 1
 		if [ -f /home/pi/*cocktailpi-data.db ]; then
 			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 			rm -rf /home/pi/*cocktailpi-data.db
 			echo ""
-			color g n "Successful Data Recovery #2"
+			color g n "Database restored successfully"
 			echo ""
 			echo ""
 			sleep 1
@@ -439,6 +443,12 @@ fi
 
 if [ ! -n "$modsel" ]; then
     select_mode
+fi
+
+if [ "$modsel" = "8" ]; then
+    clear
+	sudo restart
+	exit 0
 fi
 
 if [ "$modsel" = "7" ]; then
