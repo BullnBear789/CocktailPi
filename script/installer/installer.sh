@@ -228,7 +228,6 @@ function restore_database {
 	else
 		if ! [ -f /home/pi/*cocktailpi-data.db ]; then
 			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-			rm -rf /home/pi/*cocktailpi-data.db
 			echo ""
 			color g n "Database restored successfully"
 			echo ""
