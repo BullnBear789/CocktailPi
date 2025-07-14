@@ -215,7 +215,7 @@ function backup_database {
 function restore_database {
     clear
 	dir="/home/pi"
-	count=$(ls -1 *cocktailpi-data.db "$dir" | wc -l)
+	count=$(ls -1 "*cocktailpi-data.db" "$dir" | wc -l)
 	echo "Please wait..."
 	echo ""
 	service cocktailpi stop
