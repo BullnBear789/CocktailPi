@@ -214,6 +214,8 @@ function backup_database {
 
 function restore_database {
     clear
+	dir="/home/pi"
+	count=$(find "$dir" -type f -name "*cocktailpi-data.db"| wc -l)
 	echo "Please wait..."
 	echo ""
 	service cocktailpi stop
@@ -226,19 +228,28 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if ! [ -f /home/pi/*cocktailpi-data.db ]; then
-			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+		if [ $count > 1 ]; then
 			echo ""
-			color g n "Database restored successfully"
+			echo "There are $count files in the $dir directory."
 			echo ""
 			echo ""
-			sleep 1
+			sleep 2
 		else
-			echo ""
-			color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
-			echo ""
-			echo ""
-			sleep 1
+			if [ $count = 1 ]; then
+				cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+				rm -rf /home/pi/*cocktailpi-data.db
+				echo ""
+				color g n "Database restored successfully"
+				echo ""
+				echo ""
+				sleep 1
+			else
+				echo ""
+				color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
+				echo ""
+				echo ""
+				sleep 1
+			fi
 		fi
 	fi
 	service cocktailpi start
