@@ -170,7 +170,7 @@ function select_mode {
 
 function clean_install {
 	clear
-	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi
+	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/cocktailpi_database
 	sudo rm -rf /home/pi/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi
@@ -181,16 +181,15 @@ function clean_install {
 function replace_database {
     clear
 	service cocktailpi stop
-	sudo cp -r /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi
-	sudo rm -rf /home/pi/Backup_CocktailPi
+	sudo cp -r /home/pi/cocktailpi_database/cocktailpi-data.db /root/cocktailpi
+	sudo rm -rf /home/pi/cocktailpi_database
 	service cocktailpi start
 }
 
-function backup_cocktailpi {
+function backup_database {
     clear
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
-		mkdir -p /home/pi/Backup_CocktailPi
-		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db 
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
 		echo ""
 		color g n "Backup completed successfully"
 		echo ""
@@ -208,12 +207,11 @@ function backup_cocktailpi {
 function restore_database {
     clear
 	service cocktailpi stop
-	if [ -f /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db ] || [ -f /home/pi/Backup_CocktailPi/cocktailpi-data.db ]; then
-		cp -r -b /home/pi/Backup_CocktailPi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-		cp -r /home/pi/Backup_CocktailPi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-		rm -rf /home/pi/Backup_CocktailPi
+	if [ -f /home/pi/cocktailpi-data.db ]; then
+		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+		rm -rf /home/pi/cocktailpi-data.db
 		echo ""
-		color g n "Successful Data Recovery"
+		color g n "Successful Data Recovery #1"
 		echo ""
 		echo ""
 		sleep 1
@@ -221,45 +219,23 @@ function restore_database {
 		echo ""
 		echo "Please wait..."
 		echo ""
-		color r n "'/home/pi/Backup_CocktailPi/cocktailpi-data.db: No such file or directory'"
+		color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
 		echo ""
 		sleep 1
-		if [ -f /home/pi/Backup_CocktailPi/*.db ]; then
-			cp -r -b /home/pi/Backup_CocktailPi/*.db /root/cocktailpi/cocktailpi-data.db
-			rm -rf /home/pi/Backup_CocktailPi
+		if [ -f /home/pi/*cocktailpi-data.db ]; then
+			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+			rm -rf /home/pi/*cocktailpi-data.db
 			echo ""
-			color g n "Successful Data Recovery"
+			color g n "Successful Data Recovery #2"
 			echo ""
 			echo ""
 			sleep 1
 		else
-			if [ -f /home/pi/Backup_cocktailpi-data.db ] || [ -f /home/pi/cocktailpi-data.db ]; then
-				cp -r -b /home/pi/Backup_cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-				cp -r /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-				rm -rf /home/pi/Backup_cocktailpi-data.db
-				rm -rf /home/pi/cocktailpi-data.db
-				echo ""
-				color g n "Successful Data Recovery"
-				echo ""
-				echo ""
-				sleep 1
-			else
-				if [ -f /home/pi/*.db ]; then
-					cp -r -b /home/pi/*.db /root/cocktailpi/cocktailpi-data.db
-					rm -rf /home/pi/*.db
-					echo ""
-					color g n "Successful Data Recovery"
-					echo ""
-					echo ""
-					sleep 1
-				else
-					echo ""
-					color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
-					echo ""
-					echo ""
-					sleep 1
-				fi
-			fi
+			echo ""
+			color r n "'/home/pi/*cocktailpi-data.db: No such file or directory'"
+			echo ""
+			echo ""
+			sleep 1
 		fi
 	fi
 	service cocktailpi start
@@ -474,7 +450,7 @@ fi
 
 if [ "$modsel" = "6" ]; then
     clear
-	backup_cocktailpi
+	backup_database
 	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 	exit 1
 fi
