@@ -175,7 +175,8 @@ function select_mode {
 
 function clean_install {
 	clear
-	sudo cp -r /root/cocktailpi/cocktailpi-data.db /home/pi/cocktailpi_database
+	service cocktailpi stop
+	sudo cp -r /root/cocktailpi /home/pi/cocktailpi_database
 	sudo rm -rf /home/pi/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi
@@ -193,6 +194,7 @@ function replace_database {
 
 function backup_database {
     clear
+	service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
 		echo ""
@@ -207,6 +209,7 @@ function backup_database {
         echo ""
 		sleep 1
 	fi
+	service cocktailpi start
 }
 
 function restore_database {
@@ -221,8 +224,6 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		echo ""
-		echo "Please wait..."
 		echo ""
 		color r n "'/home/pi/cocktailpi-data.db: No such file or directory'"
 		echo ""
@@ -453,6 +454,9 @@ fi
 
 if [ "$modsel" = "7" ]; then
     clear
+	echo ""
+	echo "Please wait..."
+	echo ""
 	restore_database
 	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 	exit 1
