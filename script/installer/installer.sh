@@ -214,6 +214,9 @@ function backup_database {
 
 function restore_database {
     clear
+	echo ""
+	echo "Please wait..."
+	echo ""
 	service cocktailpi stop
 	if [ -f /home/pi/cocktailpi-data.db ]; then
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
@@ -276,7 +279,7 @@ function rasp_router {
 		sudo touch /etc/hostapd/hostapd.conf
 		echo "interface=wlan0"  >> /etc/hostapd/hostapd.conf
 		echo "driver=nl80211"  >> /etc/hostapd/hostapd.conf
-		echo "ssid=RaspCocktail"  >> /etc/hostapd/hostapd.conf
+		echo "ssid=RaspberrySweet"  >> /etc/hostapd/hostapd.conf
 		echo "hw_mode=g"  >> /etc/hostapd/hostapd.conf
 		echo "channel=7"  >> /etc/hostapd/hostapd.conf
 		echo "wmm_enabled=0"  >> /etc/hostapd/hostapd.conf
@@ -284,7 +287,7 @@ function rasp_router {
 		echo "auth_algs=1"  >> /etc/hostapd/hostapd.conf
 		echo "ignore_broadcast_ssid=0"  >> /etc/hostapd/hostapd.conf
 		echo "wpa=2"  >> /etc/hostapd/hostapd.conf
-		echo "wpa_passphrase=9876543210"  >> /etc/hostapd/hostapd.conf
+		echo "wpa_passphrase=1234567890"  >> /etc/hostapd/hostapd.conf
 		echo "wpa_key_mgmt=WPA-PSK"  >> /etc/hostapd/hostapd.conf
 		echo "wpa_pairwise=TKIP CCMP"  >> /etc/hostapd/hostapd.conf
 		echo "rsn_pairwise=CCMP"  >> /etc/hostapd/hostapd.conf
@@ -454,9 +457,6 @@ fi
 
 if [ "$modsel" = "7" ]; then
     clear
-	echo ""
-	echo "Please wait..."
-	echo ""
 	restore_database
 	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 	exit 1
