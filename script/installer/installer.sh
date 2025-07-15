@@ -242,7 +242,7 @@ function restore_database {
 			sleep 2
 		else
 			if [ $count_database = "1" ]; then
-				$find_database | xargs -0 cp -t $backup_dir
+				#$find_database | xargs -0 cp -t $backup_dir
 				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
 				color g n "Database restored successfully 2"
