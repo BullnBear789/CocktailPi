@@ -241,7 +241,7 @@ function restore_database {
 			echo ""
 			sleep 2
 		else
-			if [ $count_backup0 = 1 ]; then
+			if [ $count_database = 1 ]; then
 				$find_database | xargs -0 cp -t $backup_dir
 				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
