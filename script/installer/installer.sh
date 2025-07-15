@@ -215,18 +215,14 @@ function backup_database {
 function restore_database {
     clear
 	dir="/home/pi"
-	backup_dir="/home/pi/abc"
 	count_database=$(find "$dir" -type f -name "cocktailpi-data.db" | wc -l)
-	count_backup0=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
-	count_backup1=$(find "$dir" -type f -name "*cocktailpi-data.db" | wc -l)
-	find_database=$(find "$dir" -type f -name "cocktailpi-data.db")
-	find_backup=$(find "$dir" -type f -name "*cocktailpi-data.db")
+	count_backup=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
 	echo "Please wait..."
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
 	if [ -f /home/pi/cocktailpi-data.db ]; then
-		cp -r /home/pi/cocktailpi-data.db "$backup_dir"
+		cp -r /home/pi/cocktailpi-data.db /home/pi/abc
 		#rm -rf /home/pi/cocktailpi-data.db
 		echo ""
 		color g n "Database restored successfully 1"
@@ -234,15 +230,15 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if [ -f "$count_database" > 1000 ]; then
+		if [ -f $count_database > 1 ]; then
 			echo ""
-			color g n "There are $count_database files in the $dir directory."
+			color y n "There are $count_database files in the $dir directory."
 			echo ""
 			echo ""
 			sleep 2
 		else
-			if [ -f "$count_database" = 1 ]; then
-				#$find_database | xargs -0 cp -t $backup_dir
+			if [ -f $count_database = 1 ]; then
+				find "$dir" -type f -name "cocktailpi-data.db" -print0 | xargs -0 cp -t /home/pi/abc
 				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
 				color g n "Database restored successfully 2"
@@ -250,16 +246,15 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				if [ -f "$count_backup0" > 1 ]; then
-					$find_database | xargs -0 cp -t $backup_dir
+				if [ -f $count_backup > 1 ]; then
 					echo ""
 					color c n "There are $count_backup1 files in the $dir directory."
 					echo ""
 					echo ""
 					sleep 2
 				else
-					if [ -f "$count_backup0" = 1 ]; then
-						cp -r -b /home/pi/*cocktailpi-data.db $backup_dir
+					if [ -f $count_backup = 1 ]; then
+						cp -r -b /home/pi/*cocktailpi-data.db /home/pi/abc/cocktailpi-data.db
 						echo ""
 						color g n "Database restored successfully 2"
 						echo ""
