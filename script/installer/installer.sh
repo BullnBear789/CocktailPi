@@ -212,10 +212,18 @@ function backup_database {
 	service cocktailpi start
 }
 
+function countfiles {
+	shopt -s nullglob
+	logfiles=($1)
+	echo ${#logfiles[@]}
+}
+    
+	
 function restore_database {
     clear
 	dir="/home/pi"
 	count=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
+	FILES_COUNT=$(countfiles "$file-*cocktailpi-data.db")
 	echo "Please wait..."
 	echo ""
 	service cocktailpi stop
@@ -230,7 +238,8 @@ function restore_database {
 	else
 		if [ $count > 1 ]; then
 			echo ""
-			echo "There are $count files in the $dir directory."
+			color y n "There are $count files in the $dir directory."
+			color c n "There are $FILES_COUNT files in the $dir directory."
 			echo ""
 			echo ""
 			sleep 2
