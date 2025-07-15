@@ -234,7 +234,7 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if [ -f "$count_database" > 1 ]; then
+		if [ -f "$count_database" > 1000 ]; then
 			echo ""
 			color g n "There are $count_database files in the $dir directory."
 			echo ""
