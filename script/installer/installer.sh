@@ -214,63 +214,69 @@ function backup_database {
 
 function restore_database {
     clear
-	source_dir="/home/pi/"
+	dir="/home/pi"
 	backup_dir="/home/pi/abc"
-	cocktailpi_dir="/root/cocktailpi"
-	file_database="cocktailpi-data.db"
-	fil_backup="*cocktailpi-data.db"
-	dir=
-	count_database=$(find "$source_dir" -maxdepth 1 -type f -name "$file_database" | wc -l)
-	count_backup=$(find "$source_dir" -maxdepth 1 -type f -name "$file_backup" | wc -l)
-	find_database=$(find "$source_dir" -type f -name "$file_database" -print0)
-	find_backup=$(find "$source_dir" -type f -name "$file_backup" -print0)
+	count_database=$(find "$dir" -type f -name "cocktailpi-data.db" | wc -l)
+	count_backup0=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
+	count_backup1=$(find "$dir" -type f -name "*cocktailpi-data.db" | wc -l)
+	find_database=$(find "$dir" -type f -name "cocktailpi-data.db")
+	find_backup=$(find "$dir" -type f -name "*cocktailpi-data.db")
 	echo "Please wait..."
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
-	if [ -f $count_database = 1 ]; then
-		find "$source_dir" -maxdepth 1 -type f -name "$file_database" -print0 | xargs -0 cp -t -r "$backup_dir"
+	if [ -f /home/pi/cocktailpi-data.db ]; then
+		cp -r /home/pi/cocktailpi-data.db "$backup_dir"
+		#rm -rf /home/pi/cocktailpi-data.db
 		echo ""
 		color g n "Database restored successfully 1"
 		echo ""
 		echo ""
 		sleep 1
 	else
-		if [ $count_database = 0 ]; then
-			"$find_database" | xargs -0 cp -t -r "$backup_dir"
+		if [ $count_database > 1 ]; then
 			echo ""
-			color g n "Database restored successfully 2"
+			color y n "There are $count_database files in the $dir directory."
 			echo ""
 			echo ""
-			sleep 1
+			sleep 2
 		else
-			if [ $count_backup = 1 ]; then
-				find "$source_dir" -maxdepth 1 -type f -name "$fil_backup" -print0 | xargs -0 cp -t -r "$backup_dir"
+			if [ $count_backup0 = 1 ]; then
+				$find_database | xargs -0 cp -t $backup_dir
+				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
-				color g n "Database restored successfully 3"
+				color g n "Database restored successfully 2"
 				echo ""
 				echo ""
 				sleep 1
 			else
-				if [ $count_backup > 1 ]; then
+				if [ $count_backup0 > 1 ]; then
+					$find_database | xargs -0 cp -t $backup_dir
 					echo ""
-					color y n "There are $count_backup files in the $source_dir directory."
+					color y n "There are $count_backup1 files in the $dir directory."
 					echo ""
 					echo ""
 					sleep 2
 				else
-					echo ""
-					color r n "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
-					color r n "Make sure you typed the name correctly, and then try again."
-					echo ""
-					echo ""
-					sleep 1
+					if [ $count_backup0 = 1 ]; then
+						cp -r -b /home/pi/*cocktailpi-data.db $backup_dir
+						echo ""
+						color g n "Database restored successfully 2"
+						echo ""
+						echo ""
+						sleep 1
+					else
+						echo ""
+						color r n "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
+						color r n "Make sure you typed the name correctly, and then try again."
+						echo ""
+						echo ""
+						sleep 1
+					fi
 				fi
-			
 			fi
 		fi
 	fi
-
 	service cocktailpi start
 }
 
