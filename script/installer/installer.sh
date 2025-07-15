@@ -280,7 +280,7 @@ function restore_database {
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
-	if ["$find_database"]; then
+	if [ -f "$find_database" == "true" ]; then
 		"$find_database"
 	else
 		"$find_backup"
