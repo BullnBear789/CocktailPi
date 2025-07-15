@@ -248,7 +248,7 @@ function restore_database {
 			else
 				if [ -f $count_backup > 1 ]; then
 					echo ""
-					color c n "There are $count_backup1 files in the $dir directory."
+					color c n "There are $count_backup files in the $dir directory."
 					echo ""
 					echo ""
 					sleep 2
