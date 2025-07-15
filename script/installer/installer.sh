@@ -234,14 +234,14 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if [ $count_database > 1 ]; then
+		if [ $count_database > "1" ]; then
 			echo ""
 			color y n "There are $count_database files in the $dir directory."
 			echo ""
 			echo ""
 			sleep 2
 		else
-			if [ $count_database = 1 ]; then
+			if [ $count_database = "1" ]; then
 				$find_database | xargs -0 cp -t $backup_dir
 				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
@@ -250,15 +250,15 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				if [ $count_backup0 > 1 ]; then
+				if [ $count_backup0 > "1" ]; then
 					$find_database | xargs -0 cp -t $backup_dir
 					echo ""
-					color y n "There are $count_backup1 files in the $dir directory."
+					color c n "There are $count_backup1 files in the $dir directory."
 					echo ""
 					echo ""
 					sleep 2
 				else
-					if [ $count_backup0 = 1 ]; then
+					if [ $count_backup0 = "1" ]; then
 						cp -r -b /home/pi/*cocktailpi-data.db $backup_dir
 						echo ""
 						color g n "Database restored successfully 2"
