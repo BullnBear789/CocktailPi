@@ -215,8 +215,8 @@ function backup_database {
 function restore_database {
     clear
 	dir="/home/pi"
-	count_database=$(find "$dir" -type f -name "cocktailpi-data.db" | wc -l)
-	count_backup=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
+	countdd=$(find "$dir" -type f -name "cocktailpi-data.db" | wc -l)
+	countbb=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
 	echo "Please wait..."
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
@@ -230,15 +230,15 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if [ -f "$count_database" > "1" ]; then
+		if [ -f "$countdd" > "1" ]; then
 			echo ""
 			color y n "There are $count_database files in the $dir directory."
 			echo ""
 			echo ""
 			sleep 2
 		else
-			if [ -f "$count_database" = "1" ]; then
-				find "$dir" -type f -name "cocktailpi-data.db" -print0 | xargs -0 cp -t /home/pi/abc
+			if [ -f "$countdd" = "1" ]; then
+				#find "$dir" -type f -name "cocktailpi-data.db" -print0 | xargs -0 cp -t /home/pi/abc
 				#rm -rf /home/pi/*cocktailpi-data.db
 				echo ""
 				color g n "Database restored successfully 2"
@@ -246,14 +246,14 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				if [ -f "$count_backup" > "1" ]; then
+				if [ -f "$countbb" > "1" ]; then
 					echo ""
 					color c n "There are $count_backup files in the $dir directory."
 					echo ""
 					echo ""
 					sleep 2
 				else
-					if [ -f "$count_backup" = "1" ]; then
+					if [ -f "$countbb" = "1" ]; then
 						cp -r -b /home/pi/*cocktailpi-data.db /home/pi/abc/cocktailpi-data.db
 						echo ""
 						color g n "Database restored successfully 2"
