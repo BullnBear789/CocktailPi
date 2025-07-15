@@ -223,7 +223,7 @@ function restore_database {
     clear
 	dir="/home/pi"
 	count=$(find "$dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
-	FILES_COUNT=$(countfiles "*cocktailpi-data.db")
+	FILES_COUNT=$(countfiles "*$file-*")
 	echo "Please wait..."
 	echo ""
 	service cocktailpi stop
