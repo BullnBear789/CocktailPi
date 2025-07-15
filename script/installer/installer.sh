@@ -237,39 +237,10 @@ function restore_database {
 			echo ""
 			sleep 2
 		else
-			if [ -f "$count_database" == "1" ]; then
-				#find "$dir" -type f -name "cocktailpi-data.db" -print0 | xargs -0 cp -t /home/pi/abc
-				#rm -rf /home/pi/*cocktailpi-data.db
-				echo ""
 				color g n "Database restored successfully 2"
 				echo ""
 				echo ""
 				sleep 1
-			else
-				if [ -f "$count_backup" > "1" ]; then
-					echo ""
-					color c n "There are $count_backup files in the $dir directory."
-					echo ""
-					echo ""
-					sleep 2
-				else
-					if [ -f "$count_backup" == "1" ]; then
-						cp -r -b /home/pi/*cocktailpi-data.db /home/pi/abc/cocktailpi-data.db
-						echo ""
-						color g n "Database restored successfully 2"
-						echo ""
-						echo ""
-						sleep 1
-					else
-						echo ""
-						color r n "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
-						color r n "Make sure you typed the name correctly, and then try again."
-						echo ""
-						echo ""
-						sleep 1
-					fi
-				fi
-			fi
 		fi
 	fi
 	service cocktailpi start
