@@ -224,8 +224,25 @@ function restore_database {
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
-
-			if [ $total_backup -gt 100 ]; then
+	if [ $count_database = 1 ]; then
+		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
+		#rm -rf /home/pi/cocktailpi-data.db
+		echo ""
+		color g n "Database restored successfully 1"
+		echo ""
+		echo ""
+		sleep 1
+	else
+		if [ $count_backup = 1 ]; then
+			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
+			#rm -rf /home/pi/*cocktailpi-data.db
+			echo ""
+			color g n "Database restored successfully"
+			echo ""
+			echo ""
+			sleep 1
+		else
+			if [ $total_backup -gt 1 ]; then
 				echo ""
 				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
@@ -239,7 +256,8 @@ function restore_database {
 				echo ""
 				sleep 1
 			fi
-
+		fi
+	fi
 	service cocktailpi start
 }
 
