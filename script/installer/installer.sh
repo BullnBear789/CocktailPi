@@ -225,7 +225,7 @@ function restore_database {
 	echo ""
 	service cocktailpi stop
 
-			if [ "$total_backup" > 1 ]; then
+			if [ "$total_backup" > "1" ]; then
 				echo ""
 				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
