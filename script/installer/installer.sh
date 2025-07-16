@@ -244,17 +244,18 @@ function restore_database {
 		else
 			if [ $total_backup -gt 1 ]; then
 				echo ""
+				color y x "file: cocktailpi-data.db"
 				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
 				echo ""
-				sleep 2
+				sleep 1
 			else
 				echo ""
-				color r x "Raspberry cannot find /home/pi/cocktailpi-data.db."
+				color r x "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
 				color r n "Make sure you typed the name correctly, and then try again."
 				echo ""
 				echo ""
-				sleep 2
+				sleep 1
 			fi
 		fi
 	fi
