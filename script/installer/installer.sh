@@ -224,7 +224,7 @@ function restore_database {
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
-	if [ -f "$count_database" = "1" ]; then
+	if [ -f "$count_database" == "1" ]; then
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
 		#rm -rf /home/pi/cocktailpi-data.db
 		echo ""
@@ -233,7 +233,7 @@ function restore_database {
 		echo ""
 		sleep 1
 	else
-		if [ -f "$count_backup" = "1" ]; then
+		if [ -f "$count_backup" == "1" ]; then
 			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
 			#rm -rf /home/pi/*cocktailpi-data.db
 			echo ""
