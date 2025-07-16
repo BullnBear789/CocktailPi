@@ -253,7 +253,7 @@ function restore_database {
 				echo ""
 				color r n "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
 				color r n "Make sure you typed the name correctly, and then try again."
-				color y n "$tdetail_database"
+				color y n "$detail_database"
 				echo ""
 				echo ""
 				sleep 2
