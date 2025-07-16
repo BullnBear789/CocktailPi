@@ -217,15 +217,14 @@ function backup_database {
 function restore_database {
     clear
 	source_dir="/home/pi"
-	count_database=$(find "$source_dir" -maxdepth 1 -type f -name "cocktailpi-data.db" | wc -l)
+	#count_database=$(find "$source_dir" -maxdepth 1 -type f -name "cocktailpi-data.db" | wc -l)
 	count_backup=$(find "$source_dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
 	total_backup=$(find "$source_dir" -type f -name "*cocktailpi-data.db" | wc -l)
-	detail_database=$(find "$source_dir" -type f -name "*cocktailpi-data.db" -print)
 	echo "Please wait..."
 	echo "finding '/home/pi/cocktailpi-data.db'"
 	echo ""
 	service cocktailpi stop
-	if [ "$count_database" = 1 ]; then
+	if [ -f /home/pi/cocktailpi-data.db ]; then
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
 		#rm -rf /home/pi/cocktailpi-data.db
 		echo ""
@@ -253,7 +252,6 @@ function restore_database {
 				echo ""
 				color r n "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
 				color r n "Make sure you typed the name correctly, and then try again."
-				color y n "$detail_database"
 				echo ""
 				echo ""
 				sleep 2
