@@ -250,8 +250,8 @@ function restore_database {
 				sleep 2
 			else
 				echo ""
-				color r \n "Raspberry cannot find /home/pi/cocktailpi-data.db."
-				color r \n "Make sure you typed the name correctly, and then try again."
+				color r n "Raspberry cannot find /home/pi/cocktailpi-data.db.\n"
+				color r n "Make sure you typed the name correctly, and then try again.\n"
 				echo ""
 				echo ""
 				sleep 2
