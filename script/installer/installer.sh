@@ -241,8 +241,8 @@ function restore_database {
 		else
 			if [ $total_backup -gt 1 ]; then
 				echo ""
-				color c x "file: *cocktailpi-data.db"
-				color c n "There are $total_backup files in the '$source_dir' directory."
+				color y x "file: *cocktailpi-data.db"
+				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
 				echo ""
 				sleep 1
