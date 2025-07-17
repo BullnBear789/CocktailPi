@@ -196,9 +196,9 @@ function backup_database {
     clear
 	service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
-		mkdir -p /home/pi/Backup_cocktailpi-data
+		#mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
-		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
+		#cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
 		echo ""
 		color g n "Backup completed successfully"
 		echo ""
