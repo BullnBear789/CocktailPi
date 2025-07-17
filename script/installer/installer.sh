@@ -245,7 +245,7 @@ function restore_database {
 				sleep 1
 			else
 				if [ "$total_backup" = 1 ]; then
-					"$total_backup" | xargs -0 cp -t {} /home/pi/
+					$total_backup | xargs -0 cp -t {} /home/pi
 					color c n "Database restored successfully 555"
 					echo ""
 					echo ""
