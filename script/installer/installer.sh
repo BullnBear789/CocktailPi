@@ -92,7 +92,7 @@ function select_mode {
 		echo "(6) Backup Database"
 		echo "(7) Restore Database"
         echo ""
-		echo "(8) Reboot"
+		echo "(9) Reboot"
         echo "(0) Exit"
     else
         echo "Installation selection"
@@ -107,7 +107,7 @@ function select_mode {
 		echo "(6) Backup Database"
 		echo "(7) Restore Database"
 		echo ""
-		echo "(8) Reboot"
+		echo "(9) Reboot"
         echo "(0) Exit"
     fi
     echo ""
@@ -157,7 +157,7 @@ function select_mode {
         '7')
             clear
         ;;
-        '8')
+        '9')
             clear
         ;;		
         '0')
@@ -176,7 +176,7 @@ function select_mode {
 function clean_install {
 	clear
 	service cocktailpi stop
-	sudo cp -r /root/cocktailpi /home/pi/cocktailpi_database
+	sudo cp -r /root/cocktailpi /home/pi/backup_cocktailpi
 	sudo rm -rf /home/pi/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi-installer.sh
 	sudo rm -rf /root/cocktailpi
@@ -184,11 +184,11 @@ function clean_install {
 	sudo rm -rf /etc/init.d/cocktailpi
 }
 
-function replace_database {
+function restore_cocktailpi {
     clear
 	service cocktailpi stop
-	sudo cp -r /home/pi/cocktailpi_database/cocktailpi-data.db /root/cocktailpi
-	sudo rm -rf /home/pi/cocktailpi_database
+	sudo cp -r /home/pi/backup_cocktailpi/cocktailpi-data.db /root/cocktailpi
+	sudo rm -rf /home/pi/backup_cocktailpi
 	service cocktailpi start
 }
 
@@ -196,9 +196,9 @@ function backup_database {
     clear
 	service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
-		mkdir -p /home/pi/Backup_CocktailPi
+		mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
-		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_CocktailPi/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
 		echo ""
 		color g n "Backup completed successfully"
 		echo ""
@@ -217,7 +217,6 @@ function backup_database {
 function restore_database {
     clear
 	source_dir="/home/pi"
-	#count_database=$(find "$source_dir" -maxdepth 1 -type f -name "cocktailpi-data.db" | wc -l)
 	count_backup=$(find "$source_dir" -maxdepth 1 -type f -name "*cocktailpi-data.db" | wc -l)
 	total_backup=$(find "$source_dir" -type f -name "*cocktailpi-data.db" | wc -l)
 	echo "Please wait..."
@@ -226,16 +225,14 @@ function restore_database {
 	service cocktailpi stop
 	if [ -f /home/pi/cocktailpi-data.db ]; then
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
-		#rm -rf /home/pi/cocktailpi-data.db
 		echo ""
-		color g n "Database restored successfully 1"
+		color g n "Database restored successfully"
 		echo ""
 		echo ""
 		sleep 1
 	else
 		if [ "$count_backup" = 1 ]; then
 			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-			#rm -rf /home/pi/*cocktailpi-data.db
 			echo ""
 			color g n "Database restored successfully"
 			echo ""
@@ -244,7 +241,7 @@ function restore_database {
 		else
 			if [ $total_backup -gt 1 ]; then
 				echo ""
-				color y x "file: cocktailpi-data.db"
+				color y x "file: *cocktailpi-data.db"
 				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
 				echo ""
@@ -462,7 +459,7 @@ if [ ! -n "$modsel" ]; then
     select_mode
 fi
 
-if [ "$modsel" = "8" ]; then
+if [ "$modsel" = "9" ]; then
     clear
 	sudo reboot
 	exit 0
@@ -648,7 +645,7 @@ else
 fi
 systemctl daemon-reload
 update-rc.d cocktailpi defaults
-replace_database
+restore_cocktailpi
 
 if [ "$langsel" = "1" ]; then
     echo "Starte CocktailPi Service..."
