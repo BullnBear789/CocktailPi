@@ -245,7 +245,7 @@ function restore_database {
 				sleep 1
 			else
 				if [ "$total_backup" = 1 ]; then
-					"$total_backup" | xargs -0 cp -t -r -b /home/pi/cocktailpi-555.db
+					"$total_backup" | xargs -0 cp -t -b /home/pi/cocktailpi-555.db
 					color c n "Database restored successfully 555"
 					echo ""
 					echo ""
