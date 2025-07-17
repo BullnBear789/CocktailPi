@@ -195,25 +195,23 @@ function restore_cocktailpi {
 function backup_database {
     clear
 	echo "Please wait..."
+	echo ""
 	service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
-		echo ""
 		color g n "Backup completed successfully"
 		echo ""
         echo ""
 		sleep 1
 	else
-		echo ""
 		color r n "No such file(cocktailpi-data.db)"
 		echo ""
         echo ""
 		sleep 1
 	fi
 	service cocktailpi start
-	return 0
 }
 
 function restore_database {
@@ -255,7 +253,6 @@ function restore_database {
 		fi
 	fi
 	service cocktailpi start
-	return 0
 }
 
 function rasp_router {
