@@ -244,11 +244,19 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				color r x "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
-				color r n "Make sure you typed the name correctly, and then try again."
-				echo ""
-				echo ""
-				sleep 1
+				if [ "$total_backup" = 1 ]; then
+					"$total_backup" | xargs -0 cp -t -r -b /home/pi/cocktailpi-555.db
+					color c n "Database restored successfully 555"
+					echo ""
+					echo ""
+					sleep 1
+				else
+					color r x "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
+					color r n "Make sure you typed the name correctly, and then try again."
+					echo ""
+					echo ""
+					sleep 1
+				fi
 			fi
 		fi
 	fi
