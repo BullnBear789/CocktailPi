@@ -194,11 +194,11 @@ function restore_cocktailpi {
 
 function backup_database {
     clear
-	service cocktailpi stop
+	#service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
-		#mkdir -p /home/pi/Backup_cocktailpi-data
+		mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
-		#cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
 		echo ""
 		color g n "Backup completed successfully"
 		echo ""
@@ -211,7 +211,7 @@ function backup_database {
         echo ""
 		sleep 1
 	fi
-	service cocktailpi start
+	#service cocktailpi start
 }
 
 function restore_database {
