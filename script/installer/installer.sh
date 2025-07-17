@@ -195,6 +195,8 @@ function restore_cocktailpi {
 function backup_database {
     clear
 	service cocktailpi stop
+	echo "Please wait..."
+	echo ""
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
