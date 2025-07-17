@@ -199,11 +199,13 @@ function backup_database {
 		mkdir -p /home/pi/Backup_cocktailpi-data
 		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
 		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
+		echo ""
 		color g n "Backup completed successfully"
 		echo ""
         echo ""
 		sleep 1
 	else
+		echo ""
 		color r n "No such file(cocktailpi-data.db)"
 		echo ""
         echo ""
@@ -236,14 +238,12 @@ function restore_database {
 			sleep 1
 		else
 			if [ $total_backup -gt 1 ]; then
-				echo ""
 				color y x "file: *cocktailpi-data.db"
 				color y n "There are $total_backup files in the '$source_dir' directory."
 				echo ""
 				echo ""
 				sleep 1
 			else
-				echo ""
 				color r x "Raspberry cannot find '/home/pi/cocktailpi-data.db'."
 				color r n "Make sure you typed the name correctly, and then try again."
 				echo ""
@@ -470,8 +470,6 @@ fi
 
 if [ "$modsel" = "6" ]; then
     clear
-	echo "Please wait..."
-	echo ""
 	backup_database
 	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
 	exit 1
