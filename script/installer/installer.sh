@@ -194,6 +194,7 @@ function restore_cocktailpi {
 
 function backup_database {
     clear
+	echo "Please wait..."
 	service cocktailpi stop
 	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
 		mkdir -p /home/pi/Backup_cocktailpi-data
@@ -212,6 +213,7 @@ function backup_database {
 		sleep 1
 	fi
 	service cocktailpi start
+	return 0
 }
 
 function restore_database {
@@ -253,6 +255,7 @@ function restore_database {
 		fi
 	fi
 	service cocktailpi start
+	return 0
 }
 
 function rasp_router {
@@ -469,7 +472,6 @@ if [ "$modsel" = "7" ]; then
 fi
 
 if [ "$modsel" = "6" ]; then
-	echo "Please wait..."
     clear
 	backup_database
 	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
