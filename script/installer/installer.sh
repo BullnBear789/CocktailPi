@@ -225,14 +225,14 @@ function restore_database {
 	service cocktailpi stop
 	if [ -f /home/pi/cocktailpi-data.db ]; then
 		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
-		color g n "Database restored successfully"
+		color g n "Database restored successfully 111"
 		echo ""
 		echo ""
 		sleep 1
 	else
 		if [ "$count_backup" = 1 ]; then
 			cp -r -b /home/pi/*cocktailpi-data.db /root/cocktailpi/cocktailpi-data.db
-			color g n "Database restored successfully"
+			color g n "Database restored successfully 222"
 			echo ""
 			echo ""
 			sleep 1
@@ -244,8 +244,8 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				if [ "$total_backup" = 1 ]; then
-					$total_backup | xargs -0 cp -t {} /home/pi
+				if [ $total_backup -e 1 ]; then
+					find -type f -name "*cocktailpi-data.db" -exec sh -c 'cp -r -b {} /home/pi/abc/ccc.db' \;
 					color c n "Database restored successfully 555"
 					echo ""
 					echo ""
