@@ -244,7 +244,7 @@ function restore_database {
 				echo ""
 				sleep 1
 			else
-				if [ $total_backup -e 1 ]; then
+				if [ "$total_backup" = 1 ]; then
 					find -type f -name "*cocktailpi-data.db" -exec sh -c 'cp -r -b {} /home/pi/abc/ccc.db' \;
 					color c n "Database restored successfully 555"
 					echo ""
