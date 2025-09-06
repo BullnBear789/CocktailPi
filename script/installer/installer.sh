@@ -87,7 +87,10 @@ function select_mode {
         echo "(1) CocktailPi"
         echo "(2) CocktailPi + Touchscreen ohne Bildschirmtastatur"
         echo "(3) CocktailPi + Touchscreen mit Bildschirmtastatur"
-        echo ""
+        echo "(4) Konfiguration: Größe der Touchscreen UI ändern"
+		echo "(5) Backup Database"
+		echo "(6) Restore Database"
+		echo "(7) Reboot"
         echo "(0) Exit"
     else
         echo "Installation selection"
@@ -97,7 +100,10 @@ function select_mode {
         echo "(1) CocktailPi"
         echo "(2) CocktailPi + Touchscreen without on-screen keyboard"
         echo "(3) CocktailPi + Touchscreen with on-screen keyboard"
-        echo ""
+        echo "(4) Configuration: Change size of Touchscreen UI"
+		echo "(5) Backup Database"
+		echo "(6) Restore Database"
+		echo "(7) Reboot"
         echo "(0) Exit"
     fi
     echo ""
@@ -106,13 +112,13 @@ function select_mode {
         if [ "$modsel" = "" ]; then
             echo -n "Bitte geben Sie ihre Auswahl an: "
         else
-            color r n "Bitte geben Sie entweder 1,2,3 oder 0 ein: "
+            color r n "Bitte geben Sie entweder 1,2,3,4,5,6,7 oder 0 ein: "
         fi
     else
         if [ "$modsel" = "" ]; then
             echo -n "Please enter your selection: "
         else
-            color r n "Please enter either 1,2,3 or 0: "
+            color r n "Please enter either 1,2,3,4,5,6,7 or 0: "
         fi
     fi
 
@@ -135,6 +141,18 @@ function select_mode {
         '3')
             clear
         ;;
+        '4')
+            clear
+        ;;
+        '5')
+            clear
+		;;
+        '6')
+            clear
+		;;
+        '7')
+            clear
+        ;;		
         '0')
             clear
             exit 0
@@ -146,6 +164,83 @@ function select_mode {
         ;;
     esac
     done
+}
+
+function backup_database {
+    clear
+	echo "Please wait..."
+	echo ""
+	service cocktailpi stop
+	if [ -f /root/cocktailpi/cocktailpi-data.db ]; then
+		mkdir -p /home/pi/Backup_cocktailpi-data
+		cp -r /root/cocktailpi/cocktailpi-data.db /home/pi
+		cp -r -b /root/cocktailpi/cocktailpi-data.db /home/pi/Backup_cocktailpi-data/backup_$(date +%d-%m-%Y)_cocktailpi-data.db 
+		color g n "Backup completed successfully"
+		echo ""
+        echo ""
+		sleep 1
+	else
+		color r n "No such file(cocktailpi-data.db)"
+		echo ""
+        echo ""
+		sleep 1
+	fi
+	service cocktailpi start
+}
+
+function restore_database {
+    clear
+	source_dir="/home/pi"
+	count_backup=$(find "$source_dir" -maxdepth 1 -type f -name "*cocktailpi-data*.db" | wc -l)
+	total_backup=$(find "$source_dir" -type f -name "*cocktailpi-data*.db" | wc -l)
+	echo "Please wait..."
+	echo "finding '/home/pi/cocktailpi-data.db'"
+	echo ""
+	service cocktailpi stop
+	if [ -f /home/pi/cocktailpi-data.db ]; then
+		cp -r /home/pi/cocktailpi-data.db /root/cocktailpi
+		color g n "Database restored successfully"
+		echo ""
+		echo ""
+		sleep 1
+	else
+		if [ "$count_backup" = 1 ]; then
+			cp -r -b /home/pi/*cocktailpi-data*.db /root/cocktailpi/cocktailpi-data.db
+			color g n "Database restored successfully"
+			echo ""
+			echo ""
+			sleep 1
+		else
+			if [ $total_backup -gt 1 ]; then
+				color y x "file: *cocktailpi-data*.db"
+				color y x "There are $total_backup files in the '$source_dir' directory."
+				echo ""
+				color c x "Problem solving: restore the backup of your database."
+				color c x "  1) To copy or move a database file(*cocktailpi-data*.db)"
+				color c x "     to '/home/pi' directory and then restore database, or"
+				color c x "  2) To copy or move a database file(cocktailpi-data.db)"
+				color c n "     to '/root/cocktailpi' directory."
+				echo ""
+				echo ""
+				sleep 2
+			else
+				if [ "$total_backup" = 1 ]; then
+					find -type f -name "*cocktailpi-data*.db" -exec sh -c 'cp -r -b {} /root/cocktailpi/cocktailpi-data.db' \;
+					color c n "Database restored successfully"
+					echo ""
+					echo ""
+					sleep 1
+				else
+					color r x "Raspberry cannot find '/home/pi/*cocktailpi-data*.db'."
+					color r n "Make sure you typed the name correctly, and then try again."
+					echo ""
+					echo ""
+					sleep 1
+				fi
+			fi
+		fi
+	fi
+	service cocktailpi start
 }
 
 function select_confirm {
@@ -260,12 +355,87 @@ if [ "$(id -u)" != "0" ]; then
     else
         color r x "You need root privileges. Switch to the roor-User using \"sudo -i\""
     fi
-    exit 0
+    exit 1
 fi
 
 
 if [ ! -n "$modsel" ]; then
     select_mode
+fi
+
+if [ "$modsel" = "7" ]; then
+    clear
+	sudo reboot
+	exit 0
+fi
+
+if [ "$modsel" = "6" ]; then
+    clear
+	restore_database
+	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
+	exit 1
+fi
+
+if [ "$modsel" = "5" ]; then
+    clear
+	backup_database
+	wget https://raw.githubusercontent.com/BullnBear789/CocktailPi/refs/heads/master/script/installer/installer.sh -O cocktailpi-installer.sh && chmod +x cocktailpi-installer.sh && ./cocktailpi-installer.sh
+	exit 1
+fi
+
+if [ "$modsel" = "4" ]; then
+  if ! [ -d "/home/pi/.config/chromium-profile/" ]; then
+    if [ "$langsel" = "1" ]; then
+        color r x "Touchscreen UI ist nicht installiert. Bitte installieren Sie diese zuerst und starten Sie dann das Skript neu!"
+    else
+        color r x "Touchscreen UI is not installed. Please install it first and restart the script afterwards!"
+    fi
+    exit 1
+  fi
+
+  while true; do
+    if [ "$langsel" = "1" ]; then
+        read -p "Geben Sie den Skalierungsfaktor an (positive ganze Zahl, oder Kommazahl): " zoomsel
+    else
+        read -p "Enter default scaling level (positive number, may be floating point number): " zoomsel
+    fi
+    # Check if input is a positive number (integer or float)
+    if [[ "$zoomsel" =~ ^[+]?[0-9]+([.][0-9]+)?$ ]] && awk "BEGIN { exit ($zoomsel > 0 ? 0 : 1) }"; then
+      break
+    else
+      if [ "$langsel" = "1" ]; then
+          color r x "Ungültige Eingabe. Bitte geben Sie eine positive Zahl (z.B. 0.5, 1.0, 3.2, 5) an."
+      else
+          color r x "Invalid input. Please enter a positive number (e.g., 0.5, 1.0, 3.2, 5)."
+      fi
+    fi
+  done
+  WAYFIRE_CMD="wayfire -c ~/.config/wayfire.ini"
+  WAYFIRE_EXEC=$(basename $(echo "$WAYFIRE_CMD" | awk '{print $1}'))
+  FILE="/home/pi/.config/chromium-profile/Default/Preferences"
+  NEW_JSON="{\"partition\": {\"default_zoom_level\": {\"x\": $zoomsel}}}"
+
+  pkill -f wayfire
+
+  sudo -u pi mkdir -p "$(dirname "$FILE")"
+  if [ ! -f "$FILE" ]; then
+    # File does not exist — create with NEW_JSON
+    sudo -u pi echo "$NEW_JSON" > "$FILE"
+  else
+    # File exists — merge NEW_JSON into it
+    TMP_FILE='TempPreferences'
+    touch "$TMP_FILE"
+    echo "$NEW_JSON" | sudo -u pi jq -s '.[0] * .[1]' "$FILE" - > "$TMP_FILE"
+    mv -f "$TMP_FILE" "$FILE"
+    chown pi:pi "$FILE"
+    chmod 600 "$FILE"
+
+  fi
+  PI_ID=$(id -u pi)
+  sudo -u pi XDG_RUNTIME_DIR=/run/user/$PI_ID \
+    nohup wayfire -c /home/pi/.config/wayfire.ini > /dev/null 2>&1 < /dev/null & disown
+
+  exit 0
 fi
 
 if [ "$modsel" = "3" ]; then
@@ -343,7 +513,7 @@ if [ "$langsel" = "1" ]; then
         echo "Installing dependencies..."
     fi
 sleep 2
-apt install --no-install-recommends -y openjdk-17-jdk i2c-tools python3-full python3-pip pigpio wget libjna-java alsa-utils python3-pip nano curl
+apt install --no-install-recommends -y openjdk-17-jdk i2c-tools python3-full python3-dev python3-pip pigpio wget libjna-java alsa-utils nano curl
 
 clear
 if [ "$langsel" = "1" ]; then
@@ -413,7 +583,7 @@ fi
 raspi-config nonint do_boot_behaviour B2
 
 apt install --no-install-recommends -y chromium-browser rpi-chromium-mods
-apt install --no-install-recommends -y wayfire seatd xdg-user-dirs
+apt install --no-install-recommends -y wayfire seatd xdg-user-dirs jq
 
 raspi-config nonint do_wayland W2
 
@@ -450,15 +620,14 @@ if [ "$modsel" = "3" ]; then
     echo "        autostart" >> /home/pi/.config/wayfire.ini
     echo "" >> /home/pi/.config/wayfire.ini
     echo "[autostart]" >> /home/pi/.config/wayfire.ini
-    echo "chromium = chromium-browser https://chromewebstore.google.com/detail/chrome-simple-keyboard-a/cjabmkimbcmhhepelfhjhbhonnapiipj --kiosk --noerrdialogs --enable-extensions --disable-component-update --check-for-update-interval=31536000 --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --disable-features=OverscrollHistoryNavigation --start-maximized --force-device-scale-factor=1.0" >> /home/pi/.config/wayfire.ini
+    echo "chromium = chromium-browser https://chromewebstore.google.com/detail/chrome-simple-keyboard-a/cjabmkimbcmhhepelfhjhbhonnapiipj --kiosk --noerrdialogs --enable-extensions --disable-component-update --check-for-update-interval=31536000 --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --disable-features=OverscrollHistoryNavigation --start-maximized --user-data-dir=/home/pi/.config/chromium-profile" >> /home/pi/.config/wayfire.ini
     echo "screensaver = false" >> /home/pi/.config/wayfire.ini
     echo "dpms = false" >> /home/pi/.config/wayfire.ini
 
     confirmsel=""
-    sudo -i -u pi bash << EOF
-export XDG_RUNTIME_DIR=/run/user/1000
-nohup wayfire -c /home/pi/.config/wayfire.ini &
-EOF
+    PI_ID=$(id -u pi)
+    sudo -u pi XDG_RUNTIME_DIR=/run/user/$PI_ID \
+      nohup wayfire -c /home/pi/.config/wayfire.ini > /dev/null 2>&1 < /dev/null & disown
     if [ "$is_ssh" = "1" ]; then
         if [ "$langsel" = "1" ]; then
             select_confirm "Auf dem Bildschirm sollte sich jetzt der Chrome Webstore öffnen. Fügen Sie die angezeigte Erweiterung zu Chrome hinzu. Kehren Sie nach dem hinzufügen hierher zurück und setzen Sie das Skript mit 1 fort."
@@ -488,22 +657,27 @@ echo "plugins = \\" >> /home/pi/.config/wayfire.ini
 echo "        autostart" >> /home/pi/.config/wayfire.ini
 echo "" >> /home/pi/.config/wayfire.ini
 echo "[autostart]" >> /home/pi/.config/wayfire.ini
-echo "chromium = chromium-browser /home/pi/wait-for-app-html/index.html --kiosk --noerrdialogs --enable-extensions --disable-component-update --check-for-update-interval=31536000 --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --disable-features=OverscrollHistoryNavigation --start-maximized --force-device-scale-factor=1.0" >> /home/pi/.config/wayfire.ini
+echo "chromium = chromium-browser /home/pi/wait-for-app-html/index.html --kiosk --noerrdialogs --enable-extensions --disable-component-update --check-for-update-interval=31536000 --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --disable-features=OverscrollHistoryNavigation --start-maximized --user-data-dir=/home/pi/.config/chromium-profile" >> /home/pi/.config/wayfire.ini
 echo "screensaver = false" >> /home/pi/.config/wayfire.ini
 echo "dpms = false" >> /home/pi/.config/wayfire.ini
 
 
 clear
+service cocktailpi start
+if [ "$modsel" = "3" ] || [ "$modsel" = "2" ]; then
+  PI_ID=$(id -u pi)
+  sudo -u pi XDG_RUNTIME_DIR=/run/user/$PI_ID \
+    nohup wayfire -c /home/pi/.config/wayfire.ini > /dev/null 2>&1 < /dev/null & disown
+fi
+
 if [ "$langsel" = "1" ]; then
-    echo "CocktailPi wurde installiert!"
-    echo "Bitte starte deinen Raspberry Pi neu."
-  	echo "Ein Neustart wird benötigt um die UI zu starten."
+    echo "CocktailPi wurde installiert und startet jetzt im Hintergrund."
+    echo "Es kann einige Zeit dauer, bis sich die Software für den ersten start initialisiert hat."
   	echo ""
   	echo "Wenn dir das Projekt gefällt, kannst du es gerne auf GitHub \"starren\" ;)"
 else
-    echo "CocktailPi has been installed!"
-    echo "Please reboot your Raspberry Pi."
-	  echo "A restart is required to start the UI."
+    echo "CocktailPi has been installed and is currently starting in the background."
+    echo "It can take a while, till the software initialized itself for the first start."
 	  echo ""
 	  echo "If you like the project, please consider to \"star\" it on GitHub ;)"
 fi
